@@ -58,8 +58,8 @@ and open the template in the editor.
                 </tbody>
             </table>
         </div>
-        <br>
-        <div id="panel4" class="panel ui-helper-reset ui-widget ui-panel" style="width: 35%;height: 10%;" role="panel">
+        
+        <div id="panel4" class="panel ui-helper-reset ui-widget ui-panel" style="width: 35%;height: 23%;" role="panel">
             <h3 class="ui-helper-reset ui-widget-header ui-panel-header ui-corner-top">
                 <div class="ui-panel-title">
                     <span class="ui-panel-title-text">Listener</span>
@@ -69,11 +69,8 @@ and open the template in the editor.
                 <div class="ui-panel-content-text" id="panel4_content">
                     <table style="width: 100%;" id="listenerTable" cellpadding="3">
                         <tbody>
-                            <!-- <tr>
-                                <td style="width: 40%"><input type="checkbox" id="listenerStatus" /><label for="listenerStatus" class="ui-widget-content" style="border:none;">Start Listener</label></td>
-                             </tr> -->
                              <tr>
-                             	<td><span class="ui-widget-content" id="lblAET" style="margin-left:30px; border: none;">AE Title</span></td>
+                             	<td width="45%"><span class="ui-widget-content" id="lblAET" style="margin-left:30px; border: none;">AE Title</span></td>
                                 <td><input type="text" size="15" id="listener_ae"></td>
                             </tr>
                             <tr>
@@ -89,5 +86,30 @@ and open the template in the editor.
                 </div>
             </div>
         </div>
+                
+       <div id="panel5" class="panel ui-helper-reset ui-widget ui-panel" style="width: 35%;height: 15%;" role="panel">
+            <h3 class="ui-helper-reset ui-widget-header ui-panel-header ui-corner-top">
+                <div class="ui-panel-title">
+                    <span class="ui-panel-title-text">iOviyam 2.0 Context</span>
+                </div>
+            </h3>
+            <div class="ui-helper-reset ui-widget-content ui-panel-content ui-corner-bottom" style="display: block;">
+                <div class="ui-panel-content-text" id="panel5_content">
+                    <table style="width: 100%;" id="ioviyamCxtTable" cellpadding="3">
+                        <tbody>
+                             <tr>
+                             	<td width="45%"><span class="ui-widget-content" id="lblIoviyamCxt" style="margin-left:30px; border: none;">iOviyam Context</span></td>
+                                <td><input type="text" size="15" id="ioviyamCxt"></td>
+                            </tr>
+                            <tr>
+                            	<td></td>
+                                <td><button id="updIoviyamCxt" class="cssButton">Update</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+                       
     </body>
 </html>

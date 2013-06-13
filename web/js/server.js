@@ -11,6 +11,9 @@ $(document).ready(function() {
     $('button').button();
 
     loadTable();
+    $.get("do/IOviyamContext", function(data){ 
+    	$('#ioviyamCxt').val(data);
+    });
 
     $("#addBtn").click(function() {
         if(!addBtnPressed) {
@@ -104,6 +107,40 @@ $(document).ready(function() {
         });
     });
 
+    $('#updIoviyamCxt').click(function() { 
+    	var iOvmCxt = $('#ioviyamCxt').val().trim();
+    	if(iOvmCxt.length == 0) {
+    		alert("iOviyam context should not be empty!!!");
+    		return;
+    	} 
+    	if(iOvmCxt.indexOf("\/") != 0) {
+    		alert("iOviyam context must starts with /");
+    		return;
+    	}
+    	
+    	$.ajax({
+    		url: 'do/IOviyamContext',
+    		type: 'POST',
+    		data: {
+    			'iOviyamCxt': $('#ioviyamCxt').val(),
+    			'action': 'Update'
+    		},
+    		success: function(msg2) {
+    			if(msg2.trim() == 'success') {
+    				$.ambiance({
+    					message: "iOviyam context updated successfully!!!",
+    					type: 'success'
+    				});
+    			} else {
+    				$.ambiance({
+    					message: 'Error while updating iOviyam context!!!',
+    					type: 'error'
+    				});
+    			}
+    		}
+    	});
+    });
+    
 }); // for document.ready
 
 // To create table

@@ -48,5 +48,7 @@
          <selected>false</selected>
       </language>
    </languages>
+   
+   <ioviyam-context>/ioviyam2</ioviyam-context>
 
 </configuration>

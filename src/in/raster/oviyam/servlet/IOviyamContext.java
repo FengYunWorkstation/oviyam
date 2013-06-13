@@ -39,73 +39,49 @@
 *
 * ***** END LICENSE BLOCK ***** */
 
-package in.raster.oviyam.xml.model;
+package in.raster.oviyam.servlet;
 
-import java.util.List;
-import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.Root;
-import org.simpleframework.xml.Element;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.File;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import in.raster.oviyam.xml.handler.IOviyamCxtHandler;
 
-/**
- *
- * @author asgar
- */
-@Root(name="configuration")
-public class Configuration {
+public class IOviyamContext extends HttpServlet {
 
-    @ElementList(name="users")
-    private List<User> usersList;
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String iOviyamCxt = request.getParameter("iOviyamCxt");
+        String toDo = request.getParameter("action");
+    	response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
 
-    @ElementList(name="servers")
-    private List<Server> serversList;
-
-    @Element
-    private Listener listener;
-    
-    @ElementList(name="languages")
-    private List<Language> languagesList;
-    
-    @Element(name="ioviyam-context")
-    private String iOviyamContext;
-
-    public List<Language> getLanguagesList() {
-        return languagesList;
+        try {
+            File tempDir = (File) getServletContext().getAttribute("javax.servlet.context.tempdir");
+            
+            String warName = request.getContextPath().substring(1);
+            String tmpDirPath = tempDir.getAbsolutePath();
+            tmpDirPath = tmpDirPath.substring(0, tmpDirPath.indexOf(warName));
+            IOviyamCxtHandler cxtHandler = new IOviyamCxtHandler(tmpDirPath);
+            
+            if(toDo == null || toDo.length() == 0) {
+            	String IOCxt = cxtHandler.getContext();
+            	out.println(IOCxt);
+            } else if(toDo.equalsIgnoreCase("Update")) {
+            	cxtHandler.updateContext(iOviyamCxt);
+            	out.println("success");
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        } 
     }
 
-    public void setLanguagesList(List<Language> languagesList) {
-        this.languagesList = languagesList;
-    }  
-
-    public List<Server> getServersList() {
-        return serversList;
-    }
-
-    public void setServersList(List<Server> serversList) {
-        this.serversList = serversList;
-    }
-
-    public List<User> getUsersList() {
-        return usersList;
-    }
-
-    public void setUsersList(List<User> usersList) {
-        this.usersList = usersList;
-    }
-
-    public Listener getListener() {
-        return listener;
-    }
-
-    public void setListener(Listener listener) {
-        this.listener = listener;
-    }
-    
-    public String getIOviyamContext() {
-    	return iOviyamContext;
-    }
-    
-    public void setIOviyamContext(String iOviyamContext) {
-    	this.iOviyamContext = iOviyamContext;
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doGet(request, response);
     }
 
 }

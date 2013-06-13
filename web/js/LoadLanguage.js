@@ -62,6 +62,8 @@ function loadLabels() {
     $('#lblAET').html(languages['AETitle']);
     $('#lblport').html(languages['Port']);
     $('#updateListener').html(languages['Update']);
+    $('#lblIoviyamCxt').html(languages['IOviyamCxt']);
+    $('#updIoviyamCxt').html(languages['Update']);
 
     //query param.html
     $('#qpAddBtn').html(languages['Add']);

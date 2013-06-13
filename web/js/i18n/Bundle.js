@@ -50,6 +50,7 @@ var languages = {
     StudyDateFilter: "Study Date Filter",
     StudytimeFilter: "Study time Filter",
     ModalityFilter: "Modality Filter",
-    AutoRefresh: "Auto Refresh"
+    AutoRefresh: "Auto Refresh",
+    IOviyamCxt: "iOviyam Context"
 
 };

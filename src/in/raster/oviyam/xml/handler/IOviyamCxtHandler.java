@@ -39,73 +39,46 @@
 *
 * ***** END LICENSE BLOCK ***** */
 
-package in.raster.oviyam.xml.model;
+package in.raster.oviyam.xml.handler;
 
+import in.raster.oviyam.xml.model.Configuration;
+import in.raster.oviyam.xml.model.Language;
+import java.io.File;
 import java.util.List;
-import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.Root;
-import org.simpleframework.xml.Element;
+import org.apache.log4j.Logger;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
 
-/**
- *
- * @author asgar
- */
-@Root(name="configuration")
-public class Configuration {
+public class IOviyamCxtHandler {
 
-    @ElementList(name="users")
-    private List<User> usersList;
+    //Initialize logger
+    private static Logger log = Logger.getLogger(IOviyamCxtHandler.class);
+    private Serializer serializer = null;
+    public static File source = null;
+    private Configuration config = null;
 
-    @ElementList(name="servers")
-    private List<Server> serversList;
-
-    @Element
-    private Listener listener;
-    
-    @ElementList(name="languages")
-    private List<Language> languagesList;
-    
-    @Element(name="ioviyam-context")
-    private String iOviyamContext;
-
-    public List<Language> getLanguagesList() {
-        return languagesList;
+    public IOviyamCxtHandler(String tmpDir) {
+        try {
+            serializer = new Persister();
+            source = new File(new XMLFileHandler().getXMLFilePath(tmpDir));
+            config = serializer.read(Configuration.class, source);
+        } catch (Exception ex) {
+            log.error("Unable to read XML document", ex);
+            return;
+        }
     }
 
-    public void setLanguagesList(List<Language> languagesList) {
-        this.languagesList = languagesList;
-    }  
-
-    public List<Server> getServersList() {
-        return serversList;
+    public void updateContext(String context) {
+        try {
+            config.setIOviyamContext(context);
+            serializer.write(config, source);
+        } catch (Exception ex) {
+            log.error("Unable to modify existing iOviyam Context settings", ex);
+        }
     }
 
-    public void setServersList(List<Server> serversList) {
-        this.serversList = serversList;
-    }
-
-    public List<User> getUsersList() {
-        return usersList;
-    }
-
-    public void setUsersList(List<User> usersList) {
-        this.usersList = usersList;
-    }
-
-    public Listener getListener() {
-        return listener;
-    }
-
-    public void setListener(Listener listener) {
-        this.listener = listener;
-    }
-    
-    public String getIOviyamContext() {
-    	return iOviyamContext;
-    }
-    
-    public void setIOviyamContext(String iOviyamContext) {
-    	this.iOviyamContext = iOviyamContext;
+    public String getContext() {
+        return config.getIOviyamContext();
     }
 
 }

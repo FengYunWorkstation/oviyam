@@ -64,7 +64,11 @@
         <servlet-name>ThreeDServlet</servlet-name>
         <servlet-class>in.raster.oviyam.threed.surfaceJson</servlet-class>
     </servlet>
-    
+    <servlet>
+        <servlet-name>IOviyamContext</servlet-name>
+        <servlet-class>in.raster.oviyam.servlet.IOviyamContext</servlet-class>
+    </servlet>
+        
     <servlet-mapping>
         <servlet-name>EchoServlet</servlet-name>
         <url-pattern>/Echo.do</url-pattern>
@@ -129,6 +133,10 @@
         <servlet-name>ThreeDServlet</servlet-name>
         <url-pattern>/surfaceJson.do</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>IOviyamContext</servlet-name>
+        <url-pattern>/do/IOviyamContext</url-pattern>
+    </servlet-mapping>    
     
     <session-config>
         <session-timeout>
