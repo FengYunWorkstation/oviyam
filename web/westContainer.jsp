@@ -72,20 +72,6 @@
             var series = new Array();
 
             $(document).ready(function() {
-                var bgClr = jQuery('#westPane').css('background-color');
-                bgClr = bgClr.substring(bgClr.indexOf('(')+1, bgClr.indexOf(')'));
-                var bgColorArr = bgClr.split(',');
-                bgClr = 'rgb(';
-                for(i = 0; i<bgColorArr.length; i++) {
-                    bgClr += (255 - bgColorArr[i]);
-                    if(i != bgColorArr.length-1) {
-                        bgClr += ' , ';
-                    }
-                }
-                bgClr += ')';
-                jQuery('#studyTable').css('color', bgClr);
-                jQuery('#westPane').css('color', bgClr);
-
                 var WPSeriesColor = $('.sorting_1').css('background-color');
                 jQuery('.seriesTable').css('background-color', WPSeriesColor);
                 if(WPSeriesColor == 'rgb(211, 214, 255)')
@@ -335,6 +321,22 @@
 </table>
 <div style="height:3px"></div>
 </ser:Series>
+
+<script type="text/javascript">
+	var bgClr = jQuery('#westPane').css('background-color');
+	bgClr = bgClr.substring(bgClr.indexOf('(')+1, bgClr.indexOf(')'));
+	var bgColorArr = bgClr.split(',');
+	bgClr = 'rgb(';
+	for(i = 0; i<bgColorArr.length; i++) {
+    	bgClr += (255 - bgColorArr[i]);
+    	if(i != bgColorArr.length-1) {
+        	bgClr += ' , ';
+    	}
+	}
+	bgClr += ')';
+	jQuery('#studyTable').css('color', bgClr);
+	jQuery('#westPane').css('color', bgClr);
+</script>
 
 </body>
 </html>

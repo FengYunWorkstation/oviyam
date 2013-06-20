@@ -45,9 +45,12 @@ import in.raster.oviyam.PatientInfo;
 import in.raster.oviyam.model.StudyModel;
 import in.raster.oviyam.xml.handler.ListenerHandler;
 import in.raster.oviyam.xml.handler.ServerHandler;
+import in.raster.oviyam.xml.handler.LanguageHandler;
+import in.raster.oviyam.xml.handler.XMLFileHandler;
 import in.raster.oviyam.xml.model.Server;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.File;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -83,6 +86,15 @@ public class StudyInfoServlet extends HttpServlet {
         String serverName = request.getParameter("serverName");
 
         //File tempDir = (File) getServletContext().getAttribute("javax.servlet.context.tempdir");
+        
+        if(LanguageHandler.source == null) {
+        	File tempDir = (File) getServletContext().getAttribute("javax.servlet.context.tempdir");
+        	String warName = request.getContextPath().substring(1);
+        	String tmpDirPath = tempDir.getAbsolutePath();
+        	tmpDirPath = tmpDirPath.substring(0, tmpDirPath.indexOf(warName));
+        	LanguageHandler.source = new File(new XMLFileHandler().getXMLFilePath(tmpDirPath));
+        }
+  
         ServerHandler sh = new ServerHandler();
         Server server = null;
         if(serverName != null && !serverName.isEmpty()) {
@@ -110,8 +122,9 @@ public class StudyInfoServlet extends HttpServlet {
                 serverURL = server.getRetrieve();
             }
             
-            PatientInfo patientInfo = new PatientInfo();
-            patientInfo.callFindWithQuery(patID, "", "", "", "", "", "","","", dcmURL);
+            PatientInfo patientInfo = new PatientInfo(); 
+            patientInfo.callFindWithQuery(patID, studyUID, dcmURL); 
+            //patientInfo.callFindWithQuery(patID, "", "", "", "", "", "","","", dcmURL);
             ArrayList<StudyModel> studyList = patientInfo.getStudyList();
             
             try {

@@ -84,9 +84,6 @@ public class PatientInfo {
     public void callFindWithQuery(String searchPatientID, String searchPatientName, String searchDob, String searchDate, String studyTime, String searchModality, String accessionNumber, String referPhysician, String studyDesc, String dcmURL) {
 
         ConfigProperties cfgProperties;
-        boolean isOpen;
-        Vector dsVector;
-        CDimseService cDimseService;
 
         //Load configuration properties of the server
         try {
@@ -95,8 +92,7 @@ public class PatientInfo {
             log.error("Unable to create ConfigProperties instance ", ioe);
             return;
         }
-
-        DcmURL url = new DcmURL(dcmURL);
+        
         /**
          * Setting filter values for query such as patientId, patientName, etc.
          */
@@ -137,7 +133,61 @@ public class PatientInfo {
             log.error("Unable to set key values for query ", e);
             return;
         }
+        
+        doQuery(cfgProperties, dcmURL);
+    }
 
+    /**
+     * Queries (cFIND) the Patient/Study information from the machine (dcmProtocol://aeTitle@hostname:port);
+     *
+     * @param patientID
+     * @param studyUID
+     * @param dcmUrl
+     */
+    public void callFindWithQuery(String patientID, String studyUID, String dcmUrl) {
+    	
+        ConfigProperties cfgProperties;
+
+        //Load configuration properties of the server
+        try {
+            cfgProperties = new ConfigProperties(StorageService.class.getResource("/resources/CDimseService.cfg"));
+        } catch(IOException ioe) {
+            log.error("Unable to create ConfigProperties instance ", ioe);
+            return;
+        }
+        
+        /**
+         * Setting filter values for query such as patientId, studyUID.
+         */
+        try {
+        	if(patientID.length() > 0) {
+        		cfgProperties.put("key.PatientID", patientID);
+        	}
+
+            if(studyUID.length() > 0) {
+                cfgProperties.put("key.StudyInstanceUID", studyUID);
+            }
+        } catch(Exception e) {
+            log.error("Unable to set key values for query ", e);
+            return;
+        }
+        
+        doQuery(cfgProperties, dcmUrl);
+    	
+    }
+    
+    /**
+     * Method to start cFIND query for the Patient/Study information 
+     * @param cfgProperties
+     * @param dcmUrl
+     */
+    private void doQuery(ConfigProperties cfgProperties, String dcmUrl) {
+    	
+        boolean isOpen;
+        Vector dsVector;
+        CDimseService cDimseService;
+        DcmURL url = new DcmURL(dcmUrl);
+    	
         //create CDimseService instance
         try {
             cDimseService = new CDimseService(cfgProperties, url);
@@ -191,6 +241,7 @@ public class PatientInfo {
         } catch(InterruptedException ie) {
             log.error(ie.getMessage());
         } 
+   	
     }
 
     /**

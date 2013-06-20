@@ -24,7 +24,9 @@ function getStudyDetails() {
     if(serverName == 'null') {
         serverName = '';
     }
-
+    if(patId == 'null') {
+    	patId = '';
+    }
     if(patId != null && studyId != null && serverName != null) {
         $.post("StudyInfo.do", {
             "patientID":patId,
