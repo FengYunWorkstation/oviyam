@@ -76,7 +76,13 @@
                 jQuery('.seriesTable').css('background-color', WPSeriesColor);
                 if(WPSeriesColor == 'rgb(211, 214, 255)')
                     jQuery('.seriesTable').find('tr:first').css('background-color', WPSeriesColor);
-            });
+            
+                $('.seriesTable').find('img:last').load(function() { 
+                	//console.log("Series Loaded!!!!!!.....");
+                	saveJpgImages();
+                });   
+
+            });  //document.ready 
 
             function changeImgView(but) {
                 //var table = $(but).parent().parent().parent().parent();

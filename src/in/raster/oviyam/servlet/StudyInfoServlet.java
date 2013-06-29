@@ -89,10 +89,12 @@ public class StudyInfoServlet extends HttpServlet {
         
         if(LanguageHandler.source == null) {
         	File tempDir = (File) getServletContext().getAttribute("javax.servlet.context.tempdir");
-        	String warName = request.getContextPath().substring(1);
+        	LanguageHandler.source = new File(new XMLFileHandler().getXMLFilePath(tempDir.getParent()));
+        	
+        	/*String warName = request.getContextPath().substring(1);
         	String tmpDirPath = tempDir.getAbsolutePath();
         	tmpDirPath = tmpDirPath.substring(0, tmpDirPath.indexOf(warName));
-        	LanguageHandler.source = new File(new XMLFileHandler().getXMLFilePath(tmpDirPath));
+        	LanguageHandler.source = new File(new XMLFileHandler().getXMLFilePath(tmpDirPath));*/
         }
   
         ServerHandler sh = new ServerHandler();

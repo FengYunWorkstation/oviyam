@@ -295,9 +295,9 @@ function insertInstances(patId, studyUID, seriesUID) {
 
                         loadedImgs++;
 
-                        if(loadedImgs == pat.totalIns) {
+                       /* if(loadedImgs == pat.totalIns) {
                             saveJpgImages();
-                        }
+                        }*/
                     } //else {
                     if(!imgLoaded) {
                         loadFirstImage(seriesUID);

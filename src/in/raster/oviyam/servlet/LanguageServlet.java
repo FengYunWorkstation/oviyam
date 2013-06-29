@@ -76,11 +76,13 @@ public class LanguageServlet extends HttpServlet {
         try {
             String option = request.getParameter("option");
             File tempDir = (File) getServletContext().getAttribute("javax.servlet.context.tempdir");
-            
-            String warName = request.getContextPath().substring(1);
+            LanguageHandler langHandler = new LanguageHandler(tempDir.getParent());
+           
+            /*String warName = request.getContextPath().substring(1);
             String tmpDirPath = tempDir.getAbsolutePath();
             tmpDirPath = tmpDirPath.substring(0, tmpDirPath.indexOf(warName));
-            LanguageHandler langHandler = new LanguageHandler(tmpDirPath);
+            LanguageHandler langHandler = new LanguageHandler(tmpDirPath);*/
+           
             if (option.equals("set")) {
                 String language = request.getParameter("language");
                // Language lang = new Language();

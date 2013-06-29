@@ -61,11 +61,12 @@ public class IOviyamContext extends HttpServlet {
 
         try {
             File tempDir = (File) getServletContext().getAttribute("javax.servlet.context.tempdir");
+            IOviyamCxtHandler cxtHandler = new IOviyamCxtHandler(tempDir.getParent());
             
-            String warName = request.getContextPath().substring(1);
+            /*String warName = request.getContextPath().substring(1);
             String tmpDirPath = tempDir.getAbsolutePath();
             tmpDirPath = tmpDirPath.substring(0, tmpDirPath.indexOf(warName));
-            IOviyamCxtHandler cxtHandler = new IOviyamCxtHandler(tmpDirPath);
+            IOviyamCxtHandler cxtHandler = new IOviyamCxtHandler(tmpDirPath);*/
             
             if(toDo == null || toDo.length() == 0) {
             	String IOCxt = cxtHandler.getContext();
