@@ -41,4 +41,7 @@
 * ***** END LICENSE BLOCK ***** */
 -->
 
-<% session.invalidate();%>
+<% 
+	session.invalidate();
+	response.sendRedirect(".");
+%>

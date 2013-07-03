@@ -144,7 +144,7 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
+        <welcome-file>default.jsp</welcome-file>
     </welcome-file-list>
 
     <!-- A security constraint that restricts access to the
@@ -172,8 +172,8 @@
         <auth-method>FORM</auth-method>
         <realm-name>Archive Web Admin</realm-name>
         <form-login-config>
-            <form-login-page>/login.html</form-login-page>
-            <form-error-page>/error.html</form-error-page>
+            <form-login-page>/login.jsp</form-login-page>
+            <form-error-page>/error.jsp</form-error-page>
         </form-login-config>
     </login-config>
     <security-role>
