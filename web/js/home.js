@@ -383,7 +383,11 @@ $(document).ready(function() {
 
     // $('#resultTable tbody tr').live("click", function() {
     $('.display tbody tr').live("click", function() {
-
+		var seriesTblHr = $(this).closest('table').find('th').get(0).innerHTML;    	
+    	if( seriesTblHr.indexOf('Series Number') >= 0 ) {
+            return;
+        } 
+    	
         var tabIndex = $('#tabs_div').data('tabs').options.selected;
         var oTable = $.fn.dataTableInstances[tabIndex];
 
@@ -397,6 +401,9 @@ $(document).ready(function() {
 
         var selTabText = $('.ui-tabs-selected').find('span').html();
         var iPos = oTable.fnGetData(this);
+        if( iPos == null ) {
+    		return;
+        }       
 
         if(selTabText != 'Local') {
             if(document.getElementById(iPos[9]).style.visibility == 'hidden') {
@@ -431,11 +438,19 @@ $(document).ready(function() {
 
     //$("#resultTable tbody tr").live("dblclick", function() {
     $('.display tbody tr').live("dblclick", function() {
-
-        var tabIndex = $('#tabs_div').data('tabs').options.selected;
+    	var seriesTblHr = $(this).closest('table').find('th').get(0).innerHTML;    	
+	    
+    	if( seriesTblHr.indexOf('Series Number') >= 0 ) {
+            return;
+        } 
+   	
+    	var tabIndex = $('#tabs_div').data('tabs').options.selected;
         var oTable = $.fn.dataTableInstances[tabIndex];
-
         var nTrContent = oTable.fnGetData(this);
+        if( nTrContent == null ) {
+            return;
+        } 
+       
         var ser_url = $('.ui-tabs-selected').find('a').attr('wadoUrl');
         if(typeof ser_url == 'undefined') {
             var lSql = "select DicomURL, ServerURL from study where StudyInstanceUID='" + nTrContent[9] + "'";
