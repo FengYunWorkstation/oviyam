@@ -42,7 +42,6 @@
 package in.raster.oviyam.servlet;
 
 import in.raster.oviyam.xml.handler.LanguageHandler;
-import in.raster.oviyam.xml.model.Language;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.File;
@@ -51,7 +50,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  *

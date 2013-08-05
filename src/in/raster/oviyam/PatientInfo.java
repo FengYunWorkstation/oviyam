@@ -43,8 +43,10 @@ package in.raster.oviyam;
 
 import de.iftm.dcm4che.services.CDimseService;
 import de.iftm.dcm4che.services.ConfigProperties;
-import de.iftm.dcm4che.services.StorageService;
+import de.iftm.dcm4che.services.GenericDicomURL;
 import in.raster.oviyam.model.StudyModel;
+import in.raster.oviyam.util.IDataSet;
+
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -87,7 +89,7 @@ public class PatientInfo {
 
         //Load configuration properties of the server
         try {
-            cfgProperties = new ConfigProperties(StorageService.class.getResource("/resources/CDimseService.cfg"));
+            cfgProperties = new ConfigProperties(PatientInfo.class.getResource("/resources/CDimseService.cfg"));
         } catch(IOException ioe) {
             log.error("Unable to create ConfigProperties instance ", ioe);
             return;
@@ -150,7 +152,7 @@ public class PatientInfo {
 
         //Load configuration properties of the server
         try {
-            cfgProperties = new ConfigProperties(StorageService.class.getResource("/resources/CDimseService.cfg"));
+            cfgProperties = new ConfigProperties(PatientInfo.class.getResource("/resources/CDimseService.cfg"));
         } catch(IOException ioe) {
             log.error("Unable to create ConfigProperties instance ", ioe);
             return;
@@ -186,27 +188,13 @@ public class PatientInfo {
         boolean isOpen;
         Vector dsVector;
         CDimseService cDimseService;
-        DcmURL url = new DcmURL(dcmUrl);
+        GenericDicomURL url = new GenericDicomURL(dcmUrl);
     	
         //create CDimseService instance
         try {
             cDimseService = new CDimseService(cfgProperties, url);
         } catch(ParseException pe) {
             log.error("Unable to create CDimseService instance ", pe);
-            return;
-        }
-
-        //Open association
-        try {
-            isOpen = cDimseService.aASSOCIATE();
-            if(!isOpen) {
-                return;
-            }
-        } catch(IOException e) {
-            log.error("Error while opening association ", e);
-            return;
-        } catch(GeneralSecurityException gse) {
-            log.error("Error while opeing association ", gse);
             return;
         }
 
@@ -223,7 +211,7 @@ public class PatientInfo {
          */
         for(int dsCount=0; dsCount<dsVector.size(); dsCount++) {
             try {
-                Dataset dataSet = (Dataset) dsVector.elementAt(dsCount);
+                IDataSet dataSet = (IDataSet) dsVector.elementAt(dsCount);
 
                 //Creates the new instance of StudyModel with Dataset.
                 StudyModel studyModel = new StudyModel(dataSet);
@@ -232,15 +220,6 @@ public class PatientInfo {
                 log.error("Error while adding Dataset in studyList ", e);
             }
         }
-
-        //Release association
-        try {
-            cDimseService.aRELEASE(true);
-        } catch(IOException e) {
-            log.equals(e.getMessage());
-        } catch(InterruptedException ie) {
-            log.error(ie.getMessage());
-        } 
    	
     }
 
