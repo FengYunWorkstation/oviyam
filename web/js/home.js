@@ -64,7 +64,9 @@ $(document).ready(function() {
         success: parseJson
     });
 
-    showAllLocalStudies();
+    if( !location.search ) {
+    	showAllLocalStudies();
+    }
 
     function parseJson(json) {
 
@@ -72,10 +74,12 @@ $(document).ready(function() {
         //createButton("Search", null, null, null);
        // createButton({"label":"Search"});
 
-        $(json).each(function() {
-            //createButton(displayText, date_criteria, time_criteria, modality);
-            createButton(this);
-        });
+        if(!location.search) {
+        	$(json).each(function() {
+        		//createButton(displayText, date_criteria, time_criteria, modality);
+        		createButton(this);
+        	});
+        }
 
         $.get("UserConfig.do", {
             'settings':'theme',
@@ -271,12 +275,20 @@ $(document).ready(function() {
     }
 
     function loadTabs() {
+    	var tabName = getParameterByName("serverName");
+    	var patId = getParameterByName("patientID");
+    	var tabIndex;
+    	
         $.getJSON('DicomNodes.do', function(results) {
             var callingAET = results[results.length-1].callingAET.trim();
             for(var i=0; i<results.length-1; i++) {
                 var node = results[i];
                 //var li = '<li class="ui-state-default ui-corner-top ui-tabs-selected ui-state-active"><a href="#tab_3"><span>Local</span></a></li>';
 
+                if(node.logicalname == tabName || results.length == 1) {
+					tabIndex = parseInt(i+1);
+				}
+               
                 var dcmUrl = '';
                 if(callingAET == '') {
                     dcmUrl = "DICOM://" + node.aetitle + "@" + node.hostname + ":" + node.port;
@@ -297,16 +309,43 @@ $(document).ready(function() {
 
                 var li = '<li class="ui-state-default ui-corner-top"><a href="#' + node.aetitle + '" name="' + dcmUrl + '" wadoUrl="' + wadoUrl + '"><span>' + node.logicalname + '</span></a></li>';
                 $('#tabUL').append(li);
+                
+                var div = '';
+                if( !location.search ) {
+                	div = '<div id="' + node.aetitle + '" class="ui-tabs-panel ui-widget-content ui-corner-bottom ui-tabs-hide" style="padding: 0; width: 100%">';
+                	div += '<nav class="ui-state-default" onmouseover="this.className=\'ui-state-hover\'" onmouseout="this.className=\'ui-state-default\'" style="cursor: pointer">Search</nav>';
+                	div += '<div id="' + node.aetitle + '_search" style="height:13%; width:100%;"></div>';
+                	div += '<div id="' + node.aetitle + '_content" style="height:85%; width:99%;"></div></div>';
+                	$('#tabContent').append(div);
+                	$('#' + node.aetitle + '_search').load('newSearch.html');
+                } else {        	
+	                div = '<div id="' + node.aetitle + '" class="ui-tabs-panel ui-widget-content ui-corner-bottom ui-tabs-hide" style="padding: 0; width: 100%">';
+                	div += '<div id="' + node.aetitle + '_content" style="width:99%;"></div></div>';
+                	$('#tabContent').append(div);
+                	
+                	//load studies in data table.
+                	if(node.logicalname == tabName || results.length == 1) {
+                		var searchURL = "queryResult.jsp?";
+                		searchURL += 'patientId=' + patId;
+                		searchURL += "&dcmURL=" + dcmUrl;
+                		searchURL += '&tabName=' + node.aetitle;
+                		searchURL += '&tabIndex=' + tabIndex;
+                   
+                		var divContent = '#' + node.aetitle + '_content';
 
-                var div = '<div id="' + node.aetitle + '" class="ui-tabs-panel ui-widget-content ui-corner-bottom ui-tabs-hide" style="padding: 0; width: 100%">';
-                div += '<nav class="ui-state-default" onmouseover="this.className=\'ui-state-hover\'" onmouseout="this.className=\'ui-state-default\'" style="cursor: pointer">Search</nav>';
-                div += '<div id="' + node.aetitle + '_search" style="height:13%; width:100%;"></div>';
-                div += '<div id="' + node.aetitle + '_content" style="height:85%; width:99%;"></div></div>';
-                $('#tabContent').append(div);
-                $('#' + node.aetitle + '_search').load('newSearch.html');
+                		$(divContent).html('');
+                		$('#westPane').html('');
+                    
+                		$(divContent).load(encodeURI(searchURL), function() {
+                			clearInterval(timer);
+                			checkLocalStudies();
+                		});
+                	}
+                }
             }
 
             $("#tabs_div").tabs({
+            	selected: tabIndex,
                 select: function(event, ui) {
                     clearInterval(timer);
                     var selTabText = ui.tab.text;
@@ -642,4 +681,11 @@ function showWestPane(iPos) {
     var selTabText = $('.ui-tabs-selected').find('a').attr('href');
     var container = selTabText + '_westPane';
     $(container).load(encodeURI(tmpUrl));
+}
+
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }

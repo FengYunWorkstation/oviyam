@@ -131,7 +131,7 @@ public class StudyInfoServlet extends HttpServlet {
             
             try {
                 for(StudyModel sm : studyList) {
-                    if(sm.getStudyInstanceUID().equals(studyUID)) {
+                    //if(sm.getStudyInstanceUID().equals(studyUID)) {
                         jsonObj.put("pat_ID", patID);
                         jsonObj.put("pat_Name", sm.getPatientName());
                         jsonObj.put("pat_Birthdate", sm.getPatientBirthDate());
@@ -140,15 +140,15 @@ public class StudyInfoServlet extends HttpServlet {
                         jsonObj.put("studyDesc", sm.getStudyDescription());
                         jsonObj.put("modality", sm.getModalitiesInStudy());
                         jsonObj.put("totalIns", sm.getStudyRelatedInstances());
-                        jsonObj.put("studyUID", studyUID);
+                        jsonObj.put("studyUID", sm.getStudyInstanceUID());
                         jsonObj.put("refPhysician", sm.getPhysicianName());
                         jsonObj.put("totalSeries", sm.getStudyRelatedSeries());
                         jsonObj.put("pat_gender", sm.getPatientGender());
                         jsonObj.put("serverURL", serverURL);
                         jsonObj.put("dicomURL", dcmURL);
                         jsonObj.put("bgColor", "rgb(0, 0, 0)");
-                        break;
-                    }
+                        //break;
+                    //}
                 }
             } catch(Exception e) {
                 log.error(e);

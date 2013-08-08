@@ -68,6 +68,10 @@
         <servlet-name>IOviyamContext</servlet-name>
         <servlet-class>in.raster.oviyam.servlet.IOviyamContext</servlet-class>
     </servlet>
+    <servlet>
+    	<servlet-name>DirectUrlLaunch</servlet-name>
+    	<servlet-class>in.raster.oviyam.servlet.DirectUrlLaunch</servlet-class>
+    </servlet>
         
     <servlet-mapping>
         <servlet-name>EchoServlet</servlet-name>
@@ -137,6 +141,10 @@
         <servlet-name>IOviyamContext</servlet-name>
         <url-pattern>/do/IOviyamContext</url-pattern>
     </servlet-mapping>    
+    <servlet-mapping>
+    	<servlet-name>DirectUrlLaunch</servlet-name>
+    	<url-pattern>/oviyam</url-pattern>
+    </servlet-mapping>
     
     <session-config>
         <session-timeout>
@@ -157,6 +165,7 @@
             <url-pattern>*.jsp</url-pattern>
             <url-pattern>*.html</url-pattern>
             <url-pattern>*.do</url-pattern>
+            <url-pattern>/oviyam</url-pattern>
             <http-method>GET</http-method>
             <http-method>POST</http-method>
         </web-resource-collection>

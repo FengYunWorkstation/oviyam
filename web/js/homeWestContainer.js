@@ -65,7 +65,13 @@ function wpSeriesHandler(transaction, results) {
     }
 
     // wcContent += '</tbody></table>';
-    jQuery('#westPane').html(wcContent);
+    
+    var selTabText = $('.ui-tabs-selected').find('a').attr('href');
+    if(selTabText == '#LOCAL') {
+    	jQuery('#westPane').html(wcContent);
+    } else {
+    	jQuery(selTabText + '_westPane').html(wcContent);
+    }
 
     var bgClr = jQuery('#westPane').css('background-color');
     bgClr = bgClr.substring(bgClr.indexOf('(')+1, bgClr.indexOf(')'));

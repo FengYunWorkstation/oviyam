@@ -252,7 +252,7 @@ public class PatientInfoHandler extends SimpleTagSupport {
              log.error("Unable to create instance of PatientInfo.", e);
              return;
          }
-
+         
          try {
 
              String searchDates = from + "-" + to;
@@ -266,20 +266,29 @@ public class PatientInfoHandler extends SimpleTagSupport {
              if(studyTime.trim().equals("-")) {
                  studyTime = "";
              }
-
-             patientInfo.callFindWithQuery(patientId, patientName, birthDate, searchDates, studyTime, modality, accessionNumber, referPhysician, studyDescription, dcmURL);
+             
+             if(patientId.indexOf("|") >= 0) {
+            	 String[] patIDs = patientId.split("\\|");
+            	 for(int j=0; j<patIDs.length; j++) {
+                	 patientInfo.callFindWithQuery(patIDs[j], patientName, birthDate, searchDates, studyTime, modality, accessionNumber, referPhysician, studyDescription, dcmURL);
+            	 }
+             } else {
+            	 patientInfo.callFindWithQuery(patientId, patientName, birthDate, searchDates, studyTime, modality, accessionNumber, referPhysician, studyDescription, dcmURL);
+             }
+        
          } catch(Exception e) {
              log.error("Error while accessing callFindWithQuery method of PatientInfo.", e);
              e.printStackTrace();
              return;
          }
-
+         
          /*
           * Writes the study information to the response.
           */
          try {
              // ArrayList contains the StudyModels.
-             ArrayList<StudyModel> studyList = patientInfo.getStudyList();
+        	 ArrayList<StudyModel> studyList = patientInfo.getStudyList();        	 
+        	 
              getJspContext().setAttribute("studyList", studyList, PageContext.SESSION_SCOPE);
 
              //String[] studyIUIDs = new String[studyList.size()];
