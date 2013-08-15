@@ -834,8 +834,8 @@ function handleURL(transaction, results) {
     xhr.send();
 }
 
-function doMeasurement() {
-    measureOn();
+function doMeasurement(measureDiv) {
+    measureOn(measureDiv);
 
 /* var tmpLayer = new ovm.html.Layer('canvasLayer2');
     tmpLayer.init();

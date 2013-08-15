@@ -11,8 +11,20 @@ var lightBox = function(id){
 
     var accFrm = getActiveFrame();
     var native_rows = accFrm.contentWindow['nativeRows'];
-    var ratio = height / native_rows;
 
+    var zHeight = height;
+    if(zoomFlag < 0) {
+	   	for(var i=0; i<Math.abs(zoomFlag); i++) {
+	   		zHeight = zHeight - zHeight * (1.0 - 0.9090909090909091);
+	   	}
+    } else {
+		for(var j=0; j<Math.abs(zoomFlag); j++) {
+			zHeight = zHeight - zHeight * (1.0 - 1.1);
+		}
+    }
+           
+    var ratio = zHeight / native_rows;
+    //var ratio = height / native_rows;
     //var ratio = height / 512;
     var imgTop = jcanvas.style.marginTop;      //dcmImageLink.position().top; //dcmImageLink.css("top");
     var imgLeft = jcanvas.style.marginLeft;    //dcmImageLink.position().left; // dcmImageLink.css("left");
