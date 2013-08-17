@@ -42,10 +42,10 @@
 package in.raster.oviyam.delegate;
 
 import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.text.ParseException;
 
 import org.apache.log4j.Logger;
+
 import de.iftm.dcm4che.services.CDimseService;
 import de.iftm.dcm4che.services.ConfigProperties;
 import de.iftm.dcm4che.services.GenericDicomURL;
@@ -82,7 +82,6 @@ public class EchoService {
 	public void checkEcho(GenericDicomURL url) {
 		ConfigProperties cfgCDimseService;
 		CDimseService cDimseService;
-		boolean isOpen;
 		status = "Echo failed";
 
 

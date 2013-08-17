@@ -62,7 +62,11 @@ import org.json.JSONArray;
  */
 public class UserConfiguration extends HttpServlet {
 
-    private static Logger log = Logger.getLogger(UserConfiguration.class);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2057369996371267632L;
+	private static Logger log = Logger.getLogger(UserConfiguration.class);
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 

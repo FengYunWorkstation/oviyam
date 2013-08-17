@@ -72,7 +72,11 @@ import org.dcm4che2.data.Tag;
  */
 public class InstanceServlet extends HttpServlet {
 
-    //Initialize the logger
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5398429404376780903L;
+	//Initialize the logger
     private static Logger log = Logger.getLogger(InstanceServlet.class);
 
     /**

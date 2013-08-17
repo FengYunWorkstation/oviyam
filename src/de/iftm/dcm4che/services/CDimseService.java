@@ -158,7 +158,7 @@ public class CDimseService {
    	    dcmqr.setQueryLevel(QueryRetrieveLevel.STUDY);
    	    dcmqr.configureTransferCapability(true);
    	    
-   	    for (Enumeration it = _cfg.keys(); it.hasMoreElements(); ) {
+   	    for (Enumeration<?> it = _cfg.keys(); it.hasMoreElements(); ) {
                String key = (String) it.nextElement();
                if (key.startsWith("key.")) {
                    try {

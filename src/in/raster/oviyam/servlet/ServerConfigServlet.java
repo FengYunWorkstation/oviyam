@@ -57,7 +57,11 @@ import org.apache.log4j.Logger;
  */
 public class ServerConfigServlet extends HttpServlet {
 
-    private static Logger log = Logger.getLogger(ServerConfigServlet.class);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3946053677582438587L;
+	private static Logger log = Logger.getLogger(ServerConfigServlet.class);
    
     /** 
      * Handles the HTTP <code>GET</code> method.

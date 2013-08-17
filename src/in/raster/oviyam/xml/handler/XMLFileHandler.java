@@ -57,7 +57,7 @@ public class XMLFileHandler {
     private static Logger log = Logger.getLogger(XMLFileHandler.class);
     
     public String getXMLFilePath(String tmpDir) {
-        String xmlFilePath = this.getClass().getResource("/conf/oviyam2-config.xml").getPath();
+        //String xmlFilePath = this.getClass().getResource("/conf/oviyam2-config.xml").getPath();
         String fname = "oviyam2-config.xml";
         String retValue = null;
         

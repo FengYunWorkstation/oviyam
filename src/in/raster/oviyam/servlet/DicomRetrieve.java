@@ -59,6 +59,10 @@ import org.apache.log4j.Logger;
 public class DicomRetrieve extends HttpServlet {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4140896685136639553L;
+	/**
      *
      */
     private static Logger log = Logger.getLogger(DicomRetrieve.class);

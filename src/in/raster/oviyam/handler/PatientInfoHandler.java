@@ -67,7 +67,6 @@ public class PatientInfoHandler extends SimpleTagSupport {
     private String modality = "";
     private String from = "";
     private String to = "";
-    private String searchDays;
     private String accessionNumber = "";
     private String dcmURL = "";
     private String fromTime = "";
@@ -155,9 +154,7 @@ public class PatientInfoHandler extends SimpleTagSupport {
       */
      public void setSearchDays(String searchDays) {
          if(searchDays == null) {
-             this.searchDays = "";
          } else {
-             this.searchDays = searchDays;
          }
      }
 

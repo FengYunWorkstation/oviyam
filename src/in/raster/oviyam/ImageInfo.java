@@ -80,7 +80,6 @@ public class ImageInfo {
      */
     public void callFindWithQuery(String patientID, String studyInstanceUID, String seriesInstanceUID, String SOPInstanceUID, String dcmURL) {
         ConfigProperties cfgProperties;
-        boolean isOpen;
         Vector<IDataSet> dsVector;
         CDimseService cDimseService;
 

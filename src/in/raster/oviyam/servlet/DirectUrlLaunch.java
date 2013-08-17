@@ -113,12 +113,8 @@ public class DirectUrlLaunch extends HttpServlet {
                 callingAET = "OVIYAM2";
             }
             String dcmURL = "DICOM://" + server.getAetitle() + ":" + callingAET + "@" + server.getHostname() + ":" + server.getPort();
-            String serverURL = null;
-
             if(server.getRetrieve().equals("WADO")) {
-                serverURL = "http://" + server.getHostname() + ":" + server.getWadoport() + "/" + server.getWadocontext();
             } else {
-                serverURL = server.getRetrieve();
             }
                         
             PatientInfo patientInfo = new PatientInfo(); 

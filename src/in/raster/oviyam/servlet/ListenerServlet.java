@@ -65,7 +65,12 @@ import org.apache.log4j.Logger;
  */
 public class ListenerServlet extends HttpServlet {
 
-    private static Logger log = Logger.getLogger(ListenerServlet.class);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6959292434993654861L;
+
+	private static Logger log = Logger.getLogger(ListenerServlet.class);
 
     private static ReceiveDelegate receiveDelegate = new ReceiveDelegate();
    

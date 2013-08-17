@@ -61,7 +61,11 @@ import org.apache.log4j.Logger;
  */
 public class QueryParams extends HttpServlet {
 
-    private static Logger log = Logger.getLogger(QueryParams.class);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5685261181475121454L;
+	private static Logger log = Logger.getLogger(QueryParams.class);
    
     /** 
      * Handles the HTTP <code>GET</code> method.

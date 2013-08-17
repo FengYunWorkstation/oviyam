@@ -42,13 +42,14 @@
 package in.raster.oviyam.util;
 
 import in.raster.oviyam.model.InstanceModel;
+
 import java.util.Comparator;
 
 /**
  *
  * @author asgar
  */
-public class InstanceComparator implements Comparator {
+public class InstanceComparator implements Comparator<Object> {
 
     public int compare(Object o1, Object o2) {
         InstanceModel im1 = (InstanceModel) o1;

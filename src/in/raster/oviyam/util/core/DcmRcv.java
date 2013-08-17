@@ -1174,14 +1174,6 @@ public class DcmRcv {
         return dir;
     }
 
-    private File mkDir(Association as) {
-        File dir = getDir(as);
-        if (dir.mkdirs()) {
-            LOG.info("M-WRITE {}", dir);
-        }
-        return dir;
-    }
-
     public void onNActionRQ(Association as, DicomObject rq, DicomObject info) {
         stgcmtTimer().schedule(new SendStgCmtResult(this, mkStgCmtAE(as),
                 mkStgCmtResult(as, info)), stgcmtDelay, stgcmtRetryPeriod);

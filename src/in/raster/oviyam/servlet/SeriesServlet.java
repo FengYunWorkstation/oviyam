@@ -62,7 +62,11 @@ import org.json.JSONObject;
  */
 public class SeriesServlet extends HttpServlet {
    
-    //Initialize the Logger.
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2653173547462285673L;
+	//Initialize the Logger.
     private static Logger log = Logger.getLogger(SeriesServlet.class);
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -58,6 +58,11 @@ import org.json.JSONArray;
 public class LanguageServlet extends HttpServlet {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6255194984559547478L;
+
+	/**
      * Processes requests for both HTTP
      * <code>GET</code> and
      * <code>POST</code> methods.

@@ -41,20 +41,19 @@
 
 package in.raster.oviyam;
 
-import de.iftm.dcm4che.services.CDimseService;
-import de.iftm.dcm4che.services.ConfigProperties;
-import de.iftm.dcm4che.services.GenericDicomURL;
 import in.raster.oviyam.model.StudyModel;
 import in.raster.oviyam.util.IDataSet;
 
 import java.io.IOException;
-import java.security.GeneralSecurityException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Vector;
+
 import org.apache.log4j.Logger;
-import org.dcm4che.util.DcmURL;
-import java.text.ParseException;
-import org.dcm4che.data.Dataset;
+
+import de.iftm.dcm4che.services.CDimseService;
+import de.iftm.dcm4che.services.ConfigProperties;
+import de.iftm.dcm4che.services.GenericDicomURL;
 
 /**
  *
@@ -185,8 +184,7 @@ public class PatientInfo {
      */
     private void doQuery(ConfigProperties cfgProperties, String dcmUrl) {
     	
-        boolean isOpen;
-        Vector dsVector;
+        Vector<?> dsVector;
         CDimseService cDimseService;
         GenericDicomURL url = new GenericDicomURL(dcmUrl);
     	

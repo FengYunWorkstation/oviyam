@@ -66,7 +66,11 @@ import org.apache.log4j.Logger;
  */
 public class StudyInfoServlet extends HttpServlet {
 
-    //Initialize the Logger.
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3991811732114043249L;
+	//Initialize the Logger.
     private static Logger log = Logger.getLogger(SeriesServlet.class);
       
 

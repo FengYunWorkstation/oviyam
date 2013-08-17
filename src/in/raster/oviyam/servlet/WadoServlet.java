@@ -43,6 +43,7 @@ package in.raster.oviyam.servlet;
 
 import in.raster.oviyam.util.core.MoveScu;
 import in.raster.oviyam.xml.handler.LanguageHandler;
+
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
@@ -54,6 +55,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Iterator;
+
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
@@ -61,12 +63,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.log4j.Logger;
 import org.dcm4che2.data.DicomObject;
 import org.dcm4che2.data.Tag;
 import org.dcm4che2.image.OverlayUtils;
 import org.dcm4che2.io.DicomInputStream;
 import org.dcm4che2.tool.dcmqr.DcmQR;
+
 import com.sun.image.codec.jpeg.JPEGCodec;	 
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
@@ -76,7 +80,11 @@ import com.sun.image.codec.jpeg.JPEGImageEncoder;
  */
 public class WadoServlet extends HttpServlet {
 
-    /*
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7539930921480675336L;
+	/*
      * Initialize the Logger.
      */
     private static Logger log = Logger.getLogger(WadoServlet.class);
@@ -262,17 +270,26 @@ public class WadoServlet extends HttpServlet {
     }
 
     private BufferedImage overlayDicom(File file) throws FileNotFoundException, IOException {
-        FileInputStream fis = new FileInputStream(file);
-        DicomInputStream dis = new DicomInputStream(fis);
-        DicomObject obj = dis.readDicomObject();
-        Iterator<ImageReader> iter = ImageIO.getImageReadersByFormatName("DICOM");
-        ImageReader reader = iter.next();
-
-        String overlay = obj.getString(Tag.OverlayData);
         BufferedImage bufferImg = null;
-        if(overlay != null && overlay.length() > 0) {
-            bufferImg = OverlayUtils.extractOverlay(obj, Tag.OverlayData, reader, "FFFFFF");
-        }
+        FileInputStream fis = null;
+        DicomInputStream dis = null;
+        try {
+			fis = new FileInputStream(file);
+			dis = new DicomInputStream(fis);
+			DicomObject obj = dis.readDicomObject();
+			Iterator<ImageReader> iter = ImageIO.getImageReadersByFormatName("DICOM");
+			ImageReader reader = iter.next();
+
+			String overlay = obj.getString(Tag.OverlayData);
+			if(overlay != null && overlay.length() > 0) {
+			    bufferImg = OverlayUtils.extractOverlay(obj, Tag.OverlayData, reader, "FFFFFF");
+			}
+		} finally {
+			if (dis != null)
+			   dis.close();
+			if (fis != null)
+			   fis.close();
+		}
 
         return bufferImg;
     }

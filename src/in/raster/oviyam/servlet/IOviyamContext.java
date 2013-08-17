@@ -52,7 +52,12 @@ import in.raster.oviyam.xml.handler.IOviyamCxtHandler;
 
 public class IOviyamContext extends HttpServlet {
 
-    @Override
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8709592948340914775L;
+
+	@Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String iOviyamCxt = request.getParameter("iOviyamCxt");
         String toDo = request.getParameter("action");

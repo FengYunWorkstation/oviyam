@@ -209,8 +209,6 @@ public final class GenericDicomURL extends Object
     private final static int CALLING_AET = 1;
     private final static int HOST = 2;
     private final static int PORT = 3;
-    private final static int END = 4;
-
     // Attributes ----------------------------------------------------
     private GenericDcmProtocol protocol;
     private String calledAET;

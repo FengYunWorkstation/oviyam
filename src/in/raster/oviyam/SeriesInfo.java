@@ -81,7 +81,6 @@ public class SeriesInfo {
     public void callFindWithQuery(String patientID, String studyInstanceUID, String dcmURL) {
 
         ConfigProperties cfgProperties;
-        boolean isOpen;
         Vector<IDataSet> dsVector;
         CDimseService cDimseService;
 

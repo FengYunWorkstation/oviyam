@@ -70,7 +70,12 @@ class Configuration extends Properties
    
    // Attributes ----------------------------------------------------
    
-   // Static --------------------------------------------------------  
+   /**
+	 * 
+	 */
+	private static final long serialVersionUID = -9185210441364135549L;
+
+// Static --------------------------------------------------------  
    private static String replace(String val, String from, String to) {
       return from.equals(val) ? to : val;
    }
@@ -96,7 +101,7 @@ class Configuration extends Properties
       return replace(getProperty(key, defaultValue), replace, to);
    }
    
-   public List tokenize(String s, List result) {
+   public List<String> tokenize(String s, List<String> result) {
       StringTokenizer stk = new StringTokenizer(s, ", ");
       while (stk.hasMoreTokens()) {
          String tk = stk.nextToken();
@@ -113,7 +118,7 @@ class Configuration extends Properties
       if (s == null)
          return null;
       
-      List l = tokenize(s, new LinkedList());      
+      List<?> l = tokenize(s, new LinkedList<String>());      
       return (String[])l.toArray(new String[l.size()]);
    }
        

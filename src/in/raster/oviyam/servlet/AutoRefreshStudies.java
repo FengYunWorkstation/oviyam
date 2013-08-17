@@ -64,7 +64,11 @@ import org.apache.log4j.Logger;
  */
 public class AutoRefreshStudies extends HttpServlet {
 
-    /*
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5912692403700806863L;
+	/*
      * Initialize the Logger.
      */
     private static Logger log = Logger.getLogger(DcmImage.class);
@@ -81,7 +85,7 @@ public class AutoRefreshStudies extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         HttpSession session = request.getSession();
-        List studyList = (ArrayList) session.getAttribute("studyList");
+        List<StudyModel> studyList = (ArrayList<StudyModel>) session.getAttribute("studyList");
 
         String queryStr = request.getParameter("query");
         String searchDays = findValueFromQuery(queryStr, "searchDays");
@@ -97,7 +101,7 @@ public class AutoRefreshStudies extends HttpServlet {
 
         PatientInfo patientInfo = new PatientInfo();
         patientInfo.callFindWithQuery("", "", "", searchDates, studyTime, modality, "","","", dcmUrl);
-        List studies = patientInfo.getStudyList();
+        List<?> studies = patientInfo.getStudyList();
         studies.removeAll(studyList);
 
         JSONArray jsonArray = new JSONArray();

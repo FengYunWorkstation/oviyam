@@ -49,9 +49,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
-import org.dcm4che.data.*;
-import org.dcm4che.dict.*;
-
 import org.apache.log4j.*;
 
 
@@ -66,7 +63,11 @@ import org.apache.log4j.*;
  */
 public class ConfigProperties extends Properties {
     
-    static final Logger log = Logger.getLogger("ConfigProperties");
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5088402004283222230L;
+	static final Logger log = Logger.getLogger("ConfigProperties");
     
     // Static --------------------------------------------------------
     
@@ -113,7 +114,7 @@ public class ConfigProperties extends Properties {
     }
     
     
-    public List tokenize(String s, List result) {
+    public List<String> tokenize(String s, List<String> result) {
         StringTokenizer stk = new StringTokenizer(s, ", ");
         while (stk.hasMoreTokens()) {
             String tk = stk.nextToken();
@@ -131,7 +132,7 @@ public class ConfigProperties extends Properties {
         if (s == null)
             return null;
         
-        List l = tokenize(s, new LinkedList());
+        List<String> l = tokenize(s, new LinkedList<String>());
         return (String[])l.toArray(new String[l.size()]);
     }
     
@@ -208,7 +209,7 @@ public class ConfigProperties extends Properties {
     static public URL fileRefToURL(URL baseURL, String fileRef) throws URISyntaxException, MalformedURLException {
         URL resultURL = null;
         URI fileRefURI;
-        URI baseURI;
+        
         
         // log.info("baseURL: " + baseURL.toString());
         // log.info("fileRef: " + fileRef);

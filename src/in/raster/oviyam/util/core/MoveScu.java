@@ -51,13 +51,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.dcm4che.data.Command;
 import org.dcm4che.data.Dataset;
 import org.dcm4che.data.DcmObjectFactory;
-import org.dcm4che.dict.DictionaryFactory;
 import org.dcm4che.dict.Tags;
-import org.dcm4che.dict.UIDDictionary;
 import org.dcm4che.dict.UIDs;
 import org.dcm4che.net.AAssociateAC;
 import org.dcm4che.net.AAssociateRQ;
@@ -179,9 +178,6 @@ public class MoveScu {
     /*private static ResourceBundle messages = ResourceBundle
             .getBundle("MoveScu", Locale.getDefault());*/
 
-    private static final UIDDictionary uidDict = DictionaryFactory
-            .getInstance().getDefaultUIDDictionary();
-
     private static final AssociationFactory aFact = AssociationFactory
             .getInstance();
 
@@ -215,8 +211,6 @@ public class MoveScu {
     private SSLContextAdapter tls = null;
 
     private String[] cipherSuites = null;
-
-    private ActiveAssociation activeAssociation = null;
 
     // Static --------------------------------------------------------
     private static final LongOpt[] LONG_OPTS = new LongOpt[] {
@@ -252,9 +246,9 @@ public class MoveScu {
                 .getResource("/resources/movescu.cfg"));
         String pid = null;
         String issuer = null;
-        ArrayList suids = new ArrayList();
-        ArrayList serUids = new ArrayList();
-        ArrayList iuids = new ArrayList();
+        ArrayList<String> suids = new ArrayList<String>();
+        ArrayList<String> serUids = new ArrayList<String>();
+        ArrayList<String> iuids = new ArrayList<String>();
         int c;
         while ((c = g.getopt()) != -1) {
             switch (c) {
@@ -476,9 +470,9 @@ public class MoveScu {
         assocRQ.addPresContext(aFact.newPresContext(PCID_ECHO,
                 UIDs.Verification,
                 DEF_TS));
-        List tsNames = cfg.tokenize(cfg.getProperty("ts"), new LinkedList());
+        List<?> tsNames = cfg.tokenize(cfg.getProperty("ts"), new LinkedList<String>());
         String[] tsUIDs = new String[tsNames.size()];
-        Iterator it = tsNames.iterator();
+        Iterator<?> it = tsNames.iterator();
         for (int i = 0; i < tsUIDs.length; ++i) {
             tsUIDs[i] = UIDs.forName((String) it.next());
         }
