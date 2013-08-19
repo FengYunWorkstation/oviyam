@@ -257,6 +257,13 @@ function imageHandler(transaction, results) {
         instances[i] = row['SopUID'];
     }
     
+    var qryStr = window.location.href;
+    var instanceNo = getParameter(qryStr, 'instanceNumber');
+
+    if(instanceNo != null && instanceNo.length > 0) {
+        imgInc = parseInt(instanceNo);
+    }
+    
     if(!jQuery('#loopChkBox').is(':checked')) {
 	    showDcmAttributeValues();
 	    //console.log("test");
@@ -274,12 +281,12 @@ function imageDetailsHandler(transaction, results) {
         jQuery("#modalityDiv").html(row['ModalityInStudy']);
         jQuery("#seriesDesc").html(row['SeriesDescription']);
 
-        var qryStr = window.location.href;
+        /*var qryStr = window.location.href;
         var instanceNo = getParameter(qryStr, 'instanceNumber');
 
         if(instanceNo != null && instanceNo.length > 0) {
             imgInc = parseInt(instanceNo);
-        }
+        } */
         
         if(imgInc > 0) {
             jQuery("#totalImages").html('Images: ' + (imgInc+1) + ' / ' + row['NoOfSeriesRelatedInstances']);
@@ -327,7 +334,8 @@ function prevImage(iInc) {
         //}
 
         if(imgInc < 0) {
-            imgInc = instances.length-1;
+            //imgInc = instances.length-1;
+        	return;
         }
 
         if(typeof(parent.jcanvas) != "undefined") {
@@ -377,7 +385,8 @@ function nextImage(iInc) {
         //}
 
         if(imgInc == instances.length) {
-            imgInc = 0;
+            //imgInc = 0;
+        	return;
         }
 
         if(typeof(parent.jcanvas) != "undefined") {

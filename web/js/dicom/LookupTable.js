@@ -35,7 +35,11 @@ function calculateHULookup()
     this.huLookup = new Array(4096);
     for(var inputValue=0;inputValue<=4095;inputValue++)
     {
-        this.huLookup[inputValue]=inputValue*this.rescaleSlope+this.rescaleIntercept;
+    	if(this.rescaleSlope == undefined && this.rescaleIntercept == undefined) {
+    		this.huLookup[inputValue] = inputValue;
+    	} else {   	
+    		this.huLookup[inputValue] = inputValue * this.rescaleSlope + this.rescaleIntercept;
+    	}
     }
 }
 

@@ -85,6 +85,7 @@
 				<exclude name="WEB-INF/lib/slf4j-log4j12-1.4.3.jar" />
 				<exclude name="WEB-INF/lib/jsp-api.jar"/>
 				<exclude name="WEB-INF/lib/servlet-api.jar"/>
+				<exclude name="WEB-INF/lib/vtk.jar" />
 			</fileset>
 		</war>
 	</target>

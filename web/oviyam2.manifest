@@ -43,6 +43,7 @@ js/LoadLanguage.js
 js/lib/debug.js
 js/lib/themeswitchertool.js
 js/lib/date.js
+js/lib/jquery.waitforimages.min.js
 js/viewer.js
 js/viewer1.js
 js/database.js
@@ -91,6 +92,7 @@ images/move.png
 images/scout.png
 images/layer.png
 images/Link.png
+images/unlink.png
 images/vflip.png
 images/hflip.png
 images/rotate_left.png

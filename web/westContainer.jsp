@@ -79,11 +79,17 @@
             
                 $('.seriesTable').find('img:last').load(function() { 
                 	//console.log("Series Loaded!!!!!!.....");
+                	if(pat.serverURL == 'C-GET' || pat.serverURL == 'C-MOVE') {
+	                	var tmpImgSrc = $(this).attr('src');
+    	           		$(this).parent().waitForImages(function() {
+							insertInstances('${param.patient}', getParameter(tmpImgSrc, 'study'), getParameter(tmpImgSrc, 'series'));  
+               			});
+               		}
                 	saveJpgImages();
                 });   
 
             });  //document.ready 
-
+            
             function changeImgView(but) {
                 //var table = $(but).parent().parent().parent().parent();
                 //console.log(table.children().find('tr:nth-child(2)').children());
@@ -177,7 +183,6 @@
                 actFrame.src = url;
                 doMouseWheel = true;
             }
-
 
             function storeInstanceInfo(totIns, serId) {
             	for(var i=0; i<series.length; i++) {
@@ -275,20 +280,20 @@
                             <c:when test="${param.wadoUrl == 'C-GET'}">
                                 <c:choose>
                                     <c:when test="${(instanceNumber == middle) || (instanceNumber==1) || (instanceNumber==numberOfImages)}">
-                                        <img name="${instanceNumber}" id="${fn:replace(seriesId, '.','_')}_${instanceNumber}" src="Wado.do?dicomURL=${param.dcmURL}&study=${param.study}&series=${seriesId}&object=${imageId}&retrieveType=${param.wadoUrl}&sopClassUID=${sopClassUID}" onclick="changeSeries(this)" height="48px" onload="storeInstanceInfo('${numberOfImages}', '${seriesId}')" />
+                                        <img name="${instanceNumber}" id="${fn:replace(seriesId, '.','_')}_${instanceNumber}" src="Wado.do?dicomURL=${param.dcmURL}&study=${param.study}&series=${seriesId}&object=${imageId}&retrieveType=${param.wadoUrl}&sopClassUID=${sopClassUID}" onclick="changeSeries(this)" height="48px" />
                                     </c:when>
                                     <c:otherwise>
-                                        <img name="${instanceNumber}" id="${fn:replace(seriesId, '.','_')}_${instanceNumber}" src="Wado.do?dicomURL=${param.dcmURL}&study=${param.study}&series=${seriesId}&object=${imageId}&retrieveType=${param.wadoUrl}&sopClassUID=${sopClassUID}" onclick="changeSeries(this)" height="48px" style="display:none" onload="storeInstanceInfo('${numberOfImages}', '${seriesId}')" />
+                                        <img name="${instanceNumber}" id="${fn:replace(seriesId, '.','_')}_${instanceNumber}" src="Wado.do?dicomURL=${param.dcmURL}&study=${param.study}&series=${seriesId}&object=${imageId}&retrieveType=${param.wadoUrl}&sopClassUID=${sopClassUID}" onclick="changeSeries(this)" height="48px" style="display:none" />
                                     </c:otherwise>
                                 </c:choose>
                             </c:when>
                             <c:when test="${param.wadoUrl == 'C-MOVE'}">
                                 <c:choose>
                                     <c:when test="${(instanceNumber == middle) || (instanceNumber==1) || (instanceNumber==numberOfImages)}">
-                                        <img name="${instanceNumber}" id="${fn:replace(seriesId, '.','_')}_${instanceNumber}" src="Wado.do?dicomURL=${param.dcmURL}&study=${param.study}&series=${seriesId}&object=${imageId}&retrieveType=${param.wadoUrl}" onclick="changeSeries(this)" height="48px" onload="storeInstanceInfo('${numberOfImages}', '${seriesId}')" />
+                                        <img name="${instanceNumber}" id="${fn:replace(seriesId, '.','_')}_${instanceNumber}" src="Wado.do?dicomURL=${param.dcmURL}&study=${param.study}&series=${seriesId}&object=${imageId}&retrieveType=${param.wadoUrl}" onclick="changeSeries(this)" height="48px" />
                                     </c:when>
                                     <c:otherwise>
-                                        <img name="${instanceNumber}" id="${fn:replace(seriesId, '.','_')}_${instanceNumber}" src="Wado.do?dicomURL=${param.dcmURL}&study=${param.study}&series=${seriesId}&object=${imageId}&retrieveType=${param.wadoUrl}" onclick="changeSeries(this)" height="48px" style="display:none" onload="storeInstanceInfo('${numberOfImages}', '${seriesId}')" />
+                                        <img name="${instanceNumber}" id="${fn:replace(seriesId, '.','_')}_${instanceNumber}" src="Wado.do?dicomURL=${param.dcmURL}&study=${param.study}&series=${seriesId}&object=${imageId}&retrieveType=${param.wadoUrl}" onclick="changeSeries(this)" height="48px" style="display:none" />
                                     </c:otherwise>
                                 </c:choose>
                             </c:when>

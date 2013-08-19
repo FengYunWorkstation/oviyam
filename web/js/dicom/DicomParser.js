@@ -50,10 +50,11 @@ DicomParser.prototype.setDicomElement=function(name,vr,vl,group,element,value,of
 DicomParser.prototype.readTag=function(index,firstContent,secondContent,thirdContent,fourthContent,tagName)
 {
     var i=index;
+    var flag = false;
     for(; i<this.inputBuffer.length; i++)
     {
         if(this.reader.readNumber(1,i)==firstContent && this.reader.readNumber(1,i+1)==secondContent&&this.reader.readNumber(1,i+2)==thirdContent&&this.reader.readNumber(1,i+3)==fourthContent)
-	{
+        {
             i=i+4;
             var vr= this.reader.readString(2,i);
             var vl=this.reader.readNumber(2,i+2);
@@ -61,10 +62,16 @@ DicomParser.prototype.readTag=function(index,firstContent,secondContent,thirdCon
             var tagValue=val.split("\\");
             this.setDicomElement(tagName,vr,vl,firstContent+secondContent,thirdContent+fourthContent,tagValue,i-4);
             i=i+4+vl;
+            flag = true;
             break;
-	}    
+        }    
     }
-    return i;
+    
+    if(flag) {
+    	return i;
+    } else {
+    	return index;
+    }
 }
 
 DicomParser.prototype.moveToPixelDataTag=function(index)

@@ -371,7 +371,7 @@ function saveLocally(image) {
             // Create a FileWriter object for our FileEntry.
             fileEntry.createWriter(function(fileWriter) {
                 fileWriter.onwriteend = function(e) {
-                    console.log(fileEntry.fullPath + ' Write completed.');
+                    //console.log(fileEntry.fullPath + ' Write completed.');
                 };
 
                 fileWriter.onerror = function(e) {
