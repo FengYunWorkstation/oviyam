@@ -37,12 +37,6 @@ $(document).ready(function() {
     		resizable: false
     });
 
-   /* myLayout = $('#optional-container').layout({
-        west: {
-            size: 205
-        }
-    }); */
-
     //start listener
     $.ajax({
         type: "GET",
@@ -71,12 +65,8 @@ $(document).ready(function() {
     function parseJson(json) {
 
         $('#buttonContainer').html('');
-        //createButton("Search", null, null, null);
-       // createButton({"label":"Search"});
-
         if(!location.search) {
         	$(json).each(function() {
-        		//createButton(displayText, date_criteria, time_criteria, modality);
         		createButton(this);
         	});
         }
@@ -86,19 +76,17 @@ $(document).ready(function() {
             'todo':'READ'
         }, function(data){
             $('#switcher').themeswitcher({
+            	imgpath: "images/",
                 loadTheme: data.trim(),
-                cookieName:'',
-                width: 160
+                jqueryuiversion: "1.10.3",
+                cookieName: ''
             });
             if(data.trim() == 'Dark Hive') {
                 $('.ui-widget-content').css('background', 'black');
             }
         });
-
-    //addThemeSwitcher('.ui-layout-north',{ top: '13px', right: '20px' });
     }
 
-//    function createButton(txt, crit, tCrit, modality) {
     function createButton(that) {
         var txt = that['label'];
         var crit = that['dateCrit'];
@@ -115,11 +103,10 @@ $(document).ready(function() {
 
         $('#buttonContainer').append('<input type="radio" id="' + id + '" name="radio" /><label for="' + id + '">' + txt + '</label>');
         jQuery('#' + id).click(function() {
-            var dUrl = $('.ui-tabs-selected').find('a').attr('name');
+            var dUrl = $('.ui-tabs-active').find('a').attr('name');
 
-            $('.ui-tabs-selected').find('a').attr('searchBtn', id);
+            $('.ui-tabs-active').find('a').attr('searchBtn', id);
 
-            //if($('.ui-tabs-selected').length == 0) {
             if(dUrl == null) {
                 var msg = "Please select remote server!!!";
                 noty({
@@ -176,10 +163,10 @@ $(document).ready(function() {
 
                         searchURL += "&dcmURL=" + dUrl;
 
-                        var divContent = $('.ui-tabs-selected').find('a').attr('href');
+                        var divContent = $('.ui-tabs-active').find('a').attr('href');
                         searchURL += '&tabName=' + divContent.replace('#','');
 
-                        var tabIndex = $('#tabs_div').data('tabs').options.selected;
+                        var tabIndex = $('#tabs_div').tabs( "option", "activated" );
                         searchURL += '&tabIndex=' + tabIndex;
                                             
                         divContent += '_content';
@@ -193,12 +180,12 @@ $(document).ready(function() {
 
                             if(parseInt(autoRef) > 0) {
                                 timer = setInterval(function() {
-                                    startTimer(searchURL)
+                                    startTimer(searchURL);
                                 }, parseInt(autoRef));
                             }
                         });
 
-                        $('.ui-tabs-selected').find('a').attr('searchurl', searchURL);
+                        $('.ui-tabs-active').find('a').attr('searchurl', searchURL);
                     } else {
                         var msg = "Server not available";
                         noty({
@@ -229,10 +216,10 @@ $(document).ready(function() {
         $.getJSON('RefreshStudies.do', {
             'query' : searchURL
         }, function(data) {
-            var tabIndex = $('#tabs_div').data('tabs').options.selected;
+            var tabIndex =  $('#tabs_div').tabs( "option", "activated" );
             var oTable = $.fn.dataTableInstances[tabIndex];
 
-            var selectedTabTxt = $('.ui-tabs-selected').find('span').html();
+            var selectedTabTxt = $('.ui-tabs-active').find('span').html();
             var searchTab = searchURL.substring(searchURL.indexOf('tabName=')+8);
             if(searchTab.trim() == selectedTabTxt.trim()) {
                 for(var itr=0; itr<data.length; itr++) {
@@ -277,13 +264,13 @@ $(document).ready(function() {
     function loadTabs() {
     	var tabName = getParameterByName("serverName");
     	var patId = getParameterByName("patientID");
-    	var tabIndex;
+    	var tabIndex=0;
     	
         $.getJSON('DicomNodes.do', function(results) {
             var callingAET = results[results.length-1].callingAET.trim();
             for(var i=0; i<results.length-1; i++) {
                 var node = results[i];
-                //var li = '<li class="ui-state-default ui-corner-top ui-tabs-selected ui-state-active"><a href="#tab_3"><span>Local</span></a></li>';
+                //var li = '<li class="ui-state-default ui-corner-top ui-tabs-active ui-state-active"><a href="#tab_3"><span>Local</span></a></li>';
 
                 if(node.logicalname == tabName || results.length == 1) {
 					tabIndex = parseInt(i+1);
@@ -345,17 +332,11 @@ $(document).ready(function() {
             }
 
             $("#tabs_div").tabs({
-            	selected: tabIndex,
-                select: function(event, ui) {
+            	activated: tabIndex,
+                activate: function(event, ui) {
                     clearInterval(timer);
-                    var selTabText = ui.tab.text;
+                    var selTabText = ui.newTab.text;
                     var oTable = $.fn.dataTableInstances[ui.index];
-
-                    /* var search_url = $(ui.tab).attr("searchurl");
-                    if(typeof search_url != 'undefined') {
-                        timer = setInterval(function() {startTimer(search_url)}, 10000);
-                    } */
-
                     var searchBtn = $(ui.tab).attr('searchBtn');
                     if(typeof searchBtn != 'undefined') {
                         $('#'+searchBtn).attr('checked', 'checked');
@@ -372,10 +353,6 @@ $(document).ready(function() {
                         showAllLocalStudies(oTable);
                     } else {
                         $('#buttonContainer').show();
-
-                    /*if(typeof oTable != 'undefined') {
-                            oTable.fnClearTable();
-                        }*/
                     }
 
                     $('.modalitiesList').multiselect({
@@ -420,25 +397,23 @@ $(document).ready(function() {
         }
     }) );
 
-    // $('#resultTable tbody tr').live("click", function() {
-    $('.display tbody tr').live("click", function() {
+    $(document).on("click", '.display tbody tr', function() {
 		var seriesTblHr = $(this).closest('table').find('th').get(0).innerHTML;    	
     	if( seriesTblHr.indexOf('Series Number') >= 0 ) {
             return;
         } 
     	
-        var tabIndex = $('#tabs_div').data('tabs').options.selected;
+        var tabIndex =  $('#tabs_div').tabs( "option", "activated" );
         var oTable = $.fn.dataTableInstances[tabIndex];
 
         if($(this).hasClass('row_selected')) {
-            //$(this).removeClass('row_selected');
             return;
         } else {
             oTable.$('tr.row_selected').removeClass('row_selected');
             $(this).addClass('row_selected');
         }
 
-        var selTabText = $('.ui-tabs-selected').find('span').html();
+        var selTabText = $('.ui-tabs-active').find('span').html();
         var iPos = oTable.fnGetData(this);
         if( iPos == null ) {
     		return;
@@ -475,22 +450,21 @@ $(document).ready(function() {
         }
     });
 
-    //$("#resultTable tbody tr").live("dblclick", function() {
-    $('.display tbody tr').live("dblclick", function() {
+    $(document).on("dblclick", '.display tbody tr', function() {
     	var seriesTblHr = $(this).closest('table').find('th').get(0).innerHTML;    	
 	    
     	if( seriesTblHr.indexOf('Series Number') >= 0 ) {
             return;
         } 
    	
-    	var tabIndex = $('#tabs_div').data('tabs').options.selected;
+    	var tabIndex =  $('#tabs_div').tabs( "option", "activated" );
         var oTable = $.fn.dataTableInstances[tabIndex];
         var nTrContent = oTable.fnGetData(this);
         if( nTrContent == null ) {
             return;
         } 
        
-        var ser_url = $('.ui-tabs-selected').find('a').attr('wadoUrl');
+        var ser_url = $('.ui-tabs-active').find('a').attr('wadoUrl');
         if(typeof ser_url == 'undefined') {
             var lSql = "select DicomURL, ServerURL from study where StudyInstanceUID='" + nTrContent[9] + "'";
             var myDb = initDB();
@@ -535,8 +509,8 @@ $(document).ready(function() {
                 "refPhysician" : nTrContent[10],
                 "totalSeries" : nTrContent[11],
                 "pat_gender" : nTrContent[12],
-                "serverURL" : $('.ui-tabs-selected').find('a').attr('wadoUrl'),
-                "dicomURL" : $('.ui-tabs-selected').find('a').attr('name'),
+                "serverURL" : $('.ui-tabs-active').find('a').attr('wadoUrl'),
+                "dicomURL" : $('.ui-tabs-active').find('a').attr('name'),
                 "bgColor" : $('.ui-widget-content').css('background-color')
             };
 
@@ -546,10 +520,9 @@ $(document).ready(function() {
         }
     });
 
-    //$('#resultTable tbody td img').live('click', function() {
-    $('.display tbody td img').live('click', function() {
+    $(document).on('click', '.display tbody td img', function() {
 
-        var tabIndex = $('#tabs_div').data('tabs').options.selected;
+        var tabIndex =  $('#tabs_div').tabs( "option", "activated" );
         var oTable = $.fn.dataTableInstances[tabIndex];
 
         var nTr = this.parentNode.parentNode;
@@ -561,9 +534,9 @@ $(document).ready(function() {
         } else if(this.src.match('details_open')) {
             /* Open this row */
             this.src = "images/details_close.png";
-            var selectedTabTxt = $('.ui-tabs-selected').find('span').html();
+            var selectedTabTxt = $('.ui-tabs-active').find('span').html();
             if(selectedTabTxt != 'Local') {
-                var urlDcm = $('.ui-tabs-selected').find('a').attr('name');
+                var urlDcm = $('.ui-tabs-active').find('a').attr('name');
                 var tmpUrl = "seriesDetails.jsp?patient=" + nTrContent[1] + "&study=" + nTrContent[9] + "&dcmURL=" + urlDcm;
                 $.get(tmpUrl, function(series) {
                     oTable.fnOpen(nTr, series, 'details');
@@ -604,7 +577,7 @@ $(document).ready(function() {
     $('#deleteDb').click(function() {
     	if(confirm('All the studies stored in the local storage will be deleted. Are you sure?')) {
             resetLocalDB();
-            var selTabText = $('.ui-tabs-selected').find('span').html();
+            var selTabText = $('.ui-tabs-active').find('span').html();
             if(selTabText == 'Local') {
                 $('#westPane').html('');
             }
@@ -613,26 +586,6 @@ $(document).ready(function() {
 
     $('img.menu_class').click(function () {
         $('ul.the_menu').slideToggle('medium');
-
-    /*if($('ul.the_menu').find('.jquery-ui-themeswitcher-trigger').length == 0) {
-                    $('ul.the_menu').find('#theme').themeswitcher({
-                        cookieName: '',
-                        onSelect: function() {
-                        	$('#westPane').addClass('ui-widget-content');
-                        	$('#buttonContainer').addClass('ui-widget-content');
-                        	$('#user').addClass('ui-widget-content');
-                        },
-                        onClose: function() {
-                            var selTheme = $(".jquery-ui-themeswitcher-title").html();
-                            selTheme = selTheme.split(': ')[1];
-                            //$.get("Theme.do", {'theme':selTheme});
-
-                            if(typeof selTheme != 'undefined') {
-                                $.get("UserConfig.do", {'settings':'theme', 'settingsValue':selTheme, 'todo':'UPDATE'});
-                            }
-                        }
-                    });
-		} */
     });
 
     $('#logout').click(function() {
@@ -652,8 +605,8 @@ $(document).ready(function() {
         }
     });
     
-    $('nav').live('click', function() { 
-		var selTabText = $('.ui-tabs-selected').find('a').attr('href');
+    $(document).on('click', 'nav', function() { 
+		var selTabText = $('.ui-tabs-active').find('a').attr('href');
     	var tmpStr = selTabText + '_search';
 		if($(tmpStr).is(":visible")) {
 			$(tmpStr).slideUp();
@@ -671,14 +624,14 @@ $(document).ready(function() {
 }); // for document ready
 
 function showWestPane(iPos) {
-    var urlDcm = $('.ui-tabs-selected').find('a').attr('name');
-    var urlWado = $('.ui-tabs-selected').find('a').attr('wadoUrl');
+    var urlDcm = $('.ui-tabs-active').find('a').attr('name');
+    var urlWado = $('.ui-tabs-active').find('a').attr('wadoUrl');
 
     var tmpUrl = "westContainer1.jsp?patient=" + iPos[1] + "&study=" + iPos[9] + "&patientName=" + iPos[2];
     tmpUrl += "&studyDesc=" + iPos[6] + "&studyDate=" + iPos[5].split(" ")[0] + "&totalSeries=" + iPos[11] + "&dcmURL=" + urlDcm;
     tmpUrl += "&wadoUrl=" + urlWado;
     
-    var selTabText = $('.ui-tabs-selected').find('a').attr('href');
+    var selTabText = $('.ui-tabs-active').find('a').attr('href');
     var container = selTabText + '_westPane';
     $(container).load(encodeURI(tmpUrl));
 }

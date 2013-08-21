@@ -109,7 +109,6 @@ function mousemoveHandler(evt)
 function changePreset(presetValue)
 {
     if(winEnabled) {
-        //applyPreset(parseInt(document.getElementById("preset").options[document.getElementById("preset").selectedIndex].value));
         applyPreset(parseInt(presetValue));
     }
 }

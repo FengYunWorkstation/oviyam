@@ -2,7 +2,7 @@ var iPos = null;
 var mDatabase = null;
 
 function viewWPSeries(selectedRow) {
-    var tabIndex = $('#tabs_div').data('tabs').options.selected;
+    var tabIndex = $('#tabs_div').tabs( "option", "activated" );
   	var doTable = $.fn.dataTableInstances[tabIndex];
     iPos = doTable.fnGetData(selectedRow);
     
@@ -66,7 +66,7 @@ function wpSeriesHandler(transaction, results) {
 
     // wcContent += '</tbody></table>';
     
-    var selTabText = $('.ui-tabs-selected').find('a').attr('href');
+    var selTabText = $('.ui-tabs-active').find('a').attr('href');
     if(selTabText == '#LOCAL') {
     	jQuery('#westPane').html(wcContent);
     } else {

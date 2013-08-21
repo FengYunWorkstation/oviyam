@@ -181,7 +181,7 @@
             }
             
             function openSeriesInViewer(clickImg) {
-                var selTabText = $('.ui-tabs-selected').find('span').html();
+                var selTabText = $('.ui-tabs-active').find('span').html();
                 var patId = $('#patID').html().substring(3).trim();
                 var sUrl = "viewer.html?patientID=" + patId + "&studyUID=" + getParameter(clickImg.src, "study");
                 sUrl += "&serverName=" + selTabText;

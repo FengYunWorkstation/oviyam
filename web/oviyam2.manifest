@@ -13,8 +13,6 @@ css/layout-default-latest.css
 css/jquery.contextMenu.css
 css/demo_table_jui.css
 css/jquery-ui.css
-css/jquery-ui(1).css
-css/jquery-ui(2).css
 css/jquery.ui.base.css
 css/jquery.ui.theme.css
 css/jquery.ui.core.css
@@ -36,6 +34,7 @@ js/lib/jquery-latest.js
 js/lib/jquery-ui-latest.js
 js/lib/jquery.layout-latest.js
 js/lib/jquery.dataTables.min.js
+js/lib/jaaulde.cookies.js
 js/lib/jquery.cookies.min.js
 js/lib/jquery.contextMenu.js
 js/lib/jquery.sleep.js

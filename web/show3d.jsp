@@ -14,6 +14,7 @@
         <script src="./js/lib/Three.js"> </script>
         <script src="./js/Rastergl.js"> </script>
         <script src="./js/lib/jquery-latest.js"> </script>
+                 <script type="text/javascript" src="js/lib/jaaulde.cookies.js"></script>
         <script type="text/javascript" src="js/lib/jquery.cookies.min.js"></script>
         
         <script type="text/javascript">

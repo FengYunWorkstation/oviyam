@@ -54,7 +54,7 @@
                     }
                 });
 
-                $('#queryParamTable tbody tr').live('click', function(e) {
+                $(document).on('click', '#queryParamTable tbody tr',function(e) {
                     //get checkbox of current row
                     var $checkbox = $(this).find(':checkbox');
                     //deselect the already selected checkbox

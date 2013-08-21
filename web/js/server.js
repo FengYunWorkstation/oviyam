@@ -390,7 +390,7 @@ function dataHandler(transaction, results) {
             //alert(  $("#serverTable input[type=checkbox]:checked").length );
 	}*/
 
-$("#serverTable tbody tr").live('click', function(e) {
+$(document).on('click', "#serverTable tbody tr", function(e) {
     var aet = $(this).find('td:nth-child(3)').html();
     var host = $(this).find('td:nth-child(4)').html();
     var port = $(this).find('td:nth-child(5)').html();

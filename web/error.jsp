@@ -10,6 +10,7 @@
         <script type="text/javascript" src="js/lib/jquery-latest.js"></script>
         <script type="text/javascript" src="js/lib/jquery-ui-latest.js"></script>
         <script type="text/javascript" src="js/lib/themeswitchertool.js"></script>
+         <script type="text/javascript" src="js/lib/jaaulde.cookies.js"></script>
         <script type="text/javascript" src="js/lib/jquery.cookies.min.js"></script>
 
         <link rel="stylesheet" href="css/login.css" type="text/css" />
@@ -35,7 +36,8 @@
 		$('#switcher').themeswitcher({
                     loadTheme: theme,
                     cookieName:'',
-                    width: 160
+                    width: 160,
+                    jqueryuiversion: "1.10.3"
                 });
 
 		$('#loginButton').button();

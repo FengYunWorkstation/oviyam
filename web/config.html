@@ -28,7 +28,8 @@
                 function(data){
                     $('#switcher').themeswitcher({
                         loadTheme: data.trim(),
-                        cookieName:''
+                        cookieName:'',
+                        jqueryuiversion: "1.10.3"
                     });
                     if(data.trim() == 'Dark Hive') {
                         $('.ui-widget-content').css('background', 'black');

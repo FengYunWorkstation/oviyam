@@ -200,17 +200,6 @@ function toggleImageView(img) {
 
 }
 
-/*$('.westImgs').live('click', function() {
-    var serUID_InsNo = $(this).attr('id').split('_');
-
-    var sUID = serUID_InsNo[0];
-    var insNo = serUID_InsNo[1];
-    var url = 'frameContent.html?seriesUID=' + sUID;
-    url += '&instanceNumber=' + insNo;
-    var actFrame = getActiveFrame();
-    actFrame.src = url;
-});*/
-
 function changeImgView(but) {
     //var table = $(but).parent().parent().parent().parent();
     //console.log(table.children().find('tr:nth-child(2)').children());

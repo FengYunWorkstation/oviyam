@@ -45,13 +45,13 @@ function searchClick(searchBtn) {
         searchURL += '&modality=' + modalities.trim();
     }
 
-    var dUrl = $('.ui-tabs-selected').find('a').attr('name');
+    var dUrl = $('.ui-tabs-active').find('a').attr('name');
     searchURL += "&dcmURL=" + dUrl;
 
-    var divContent = $('.ui-tabs-selected').find('a').attr('href');
+    var divContent = $('.ui-tabs-active').find('a').attr('href');
     searchURL += '&tabName=' + divContent.replace('#','');
 
-    var tabIndex = $('#tabs_div').data('tabs').options.selected;
+    var tabIndex =  $('#tabs_div').tabs( "option", "activated" );
     searchURL += '&tabIndex=' + tabIndex;
 
     divContent += '_content';
