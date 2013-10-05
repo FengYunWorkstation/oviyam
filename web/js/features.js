@@ -794,7 +794,8 @@ function handleURL(transaction, results) {
 
                 // tag list table (without the pixel data)
                 var data = dicomParser.dicomElements;
-                data.PixelData.value = "...";
+                if (data.PixelData)
+                   data.PixelData.value = "...";
 
                 var node = document.createElement('div');
                 // new table
