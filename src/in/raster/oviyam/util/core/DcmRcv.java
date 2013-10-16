@@ -190,7 +190,6 @@ public class DcmRcv {
     private final Device device;
     private final NetworkApplicationEntity ae = new NetworkApplicationEntity();
     private final NetworkConnection nc = new NetworkConnection();
-    private final StorageSCP storageSCP = new StorageSCP(this, CUIDS);
     private String[] tsuids = NON_RETIRED_LE_TS;
     private FileCache cache = new FileCache();
     private File destination;
@@ -222,7 +221,6 @@ public class DcmRcv {
         ae.setNetworkConnection(nc);
         ae.setAssociationAcceptor(true);
         ae.register(new VerificationService());
-        ae.register(storageSCP);
     }
 
     public final void setAEtitle(String aet) {
