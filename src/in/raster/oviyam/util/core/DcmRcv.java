@@ -49,7 +49,6 @@ import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.util.List;
 import java.util.Properties;
-import java.util.Timer;
 import java.util.concurrent.Executor;
 
 import org.apache.commons.cli.CommandLine;
@@ -61,17 +60,14 @@ import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.dcm4che2.data.BasicDicomObject;
-import org.dcm4che2.data.DicomElement;
 import org.dcm4che2.data.DicomObject;
 import org.dcm4che2.data.Tag;
 import org.dcm4che2.data.UID;
-import org.dcm4che2.data.VR;
 import org.dcm4che2.filecache.FileCache;
 import org.dcm4che2.io.DicomOutputStream;
 import org.dcm4che2.net.Association;
 import org.dcm4che2.net.Device;
 import org.dcm4che2.net.DicomServiceException;
-import org.dcm4che2.net.DimseRSPHandler;
 import org.dcm4che2.net.NetworkApplicationEntity;
 import org.dcm4che2.net.NetworkConnection;
 import org.dcm4che2.net.NewThreadExecutor;
@@ -90,7 +86,6 @@ import org.slf4j.LoggerFactory;
  */
 public class DcmRcv {
 
-    private static final int NO_SUCH_OBJECT_INSTANCE = 0x0112;
     static Logger LOG = LoggerFactory.getLogger(DcmRcv.class);
     private static final int KB = 1024;
     private static final String USAGE = "dcmrcv [Options] [<aet>[@<ip>]:]<port>";
@@ -196,15 +191,10 @@ public class DcmRcv {
     private final NetworkApplicationEntity ae = new NetworkApplicationEntity();
     private final NetworkConnection nc = new NetworkConnection();
     private final StorageSCP storageSCP = new StorageSCP(this, CUIDS);
-    private final StgCmtSCP stgcmtSCP = new StgCmtSCP(this);
     private String[] tsuids = NON_RETIRED_LE_TS;
     private FileCache cache = new FileCache();
     private File destination;
     private File devnull;
-    private Properties calling2dir;
-    private Properties called2dir;
-    private String callingdefdir = "OTHER";
-    private String calleddefdir = "OTHER";
     private int fileBufferSize = 1024;
     private int rspdelay = 0;
     private String keyStoreURL = "resource:tls/test_sys_2.p12";
@@ -212,7 +202,6 @@ public class DcmRcv {
     private char[] keyPassword;
     private String trustStoreURL = "resource:tls/mesa_certs.jks";
     private char[] trustStorePassword = SECRET;
-    private Timer stgcmtTimer;
     private boolean stgcmtReuseFrom = false;
     private boolean stgcmtReuseTo = false;
     private int stgcmtPort = 104;
@@ -221,9 +210,6 @@ public class DcmRcv {
     private long stgcmtRetryPeriod = 60000;
     private String stgcmtRetrieveAET;
     private String stgcmtRetrieveAETs;
-    private final DimseRSPHandler nEventReportRspHandler =
-            new DimseRSPHandler();
-
     public DcmRcv() {
         this("DCMRCV");
     }
@@ -237,7 +223,6 @@ public class DcmRcv {
         ae.setAssociationAcceptor(true);
         ae.register(new VerificationService());
         ae.register(storageSCP);
-        ae.register(stgcmtSCP);
     }
 
     public final void setAEtitle(String aet) {
@@ -976,11 +961,9 @@ public class DcmRcv {
     }
 
     public void setCalling2Dir(Properties calling2dir) {
-        this.calling2dir = calling2dir;
     }
 
     public void setCalled2Dir(Properties called2dir) {
-        this.called2dir = called2dir;
     }
 
     private static Properties loadProperties(String url) {
@@ -999,11 +982,9 @@ public class DcmRcv {
     }
 
     public void setCallingDefDir(String callingdefdir) {
-        this.callingdefdir = callingdefdir;
     }
 
     public void setCalledDefDir(String calleddefdir) {
-        this.calleddefdir = calleddefdir;
     }
 
     public void setJournal(String journalRootDir) {
@@ -1161,102 +1142,4 @@ public class DcmRcv {
        // networkQueueUpdateDelegate.updateReceiveTable(file, as.getCallingAET());
     }
 
-    private File getDir(Association as) {
-        File dir = cache.getCacheRootDir();
-        if (called2dir != null) {
-            dir = new File(dir,
-                    called2dir.getProperty(as.getCalledAET(), calleddefdir));
-        }
-        if (calling2dir != null) {
-            dir = new File(dir,
-                    calling2dir.getProperty(as.getCallingAET(), callingdefdir));
-        }
-        return dir;
-    }
-
-    public void onNActionRQ(Association as, DicomObject rq, DicomObject info) {
-        stgcmtTimer().schedule(new SendStgCmtResult(this, mkStgCmtAE(as),
-                mkStgCmtResult(as, info)), stgcmtDelay, stgcmtRetryPeriod);
-    }
-
-    private NetworkApplicationEntity mkStgCmtAE(Association as) {
-        NetworkApplicationEntity stgcmtAE = new NetworkApplicationEntity();
-        NetworkConnection stgcmtNC = new NetworkConnection();
-        stgcmtNC.setHostname(as.getSocket().getInetAddress().getHostAddress());
-        stgcmtNC.setPort(stgcmtPort);
-        stgcmtNC.setTlsCipherSuite(nc.getTlsCipherSuite());
-        stgcmtAE.setNetworkConnection(stgcmtNC);
-        stgcmtAE.setAETitle(as.getRemoteAET());
-        stgcmtAE.setTransferCapability(new TransferCapability[]{
-                    new TransferCapability(
-                    UID.StorageCommitmentPushModelSOPClass, ONLY_DEF_TS,
-                    TransferCapability.SCU)});
-        return stgcmtAE;
-    }
-
-    private DicomObject mkStgCmtResult(Association as, DicomObject rqdata) {
-        DicomObject result = new BasicDicomObject();
-        result.putString(Tag.TransactionUID, VR.UI,
-                rqdata.getString(Tag.TransactionUID));
-        DicomElement rqsq = rqdata.get(Tag.ReferencedSOPSequence);
-        DicomElement resultsq = result.putSequence(Tag.ReferencedSOPSequence);
-        if (stgcmtRetrieveAET != null) {
-            result.putString(Tag.RetrieveAETitle, VR.AE, stgcmtRetrieveAET);
-        }
-        DicomElement failedsq = null;
-        File dir = getDir(as);
-        for (int i = 0, n = rqsq.countItems(); i < n; i++) {
-            DicomObject rqItem = rqsq.getDicomObject(i);
-            String uid = rqItem.getString(Tag.ReferencedSOPInstanceUID);
-            DicomObject resultItem = new BasicDicomObject();
-            rqItem.copyTo(resultItem);
-            if (stgcmtRetrieveAETs != null) {
-                resultItem.putString(Tag.RetrieveAETitle, VR.AE,
-                        stgcmtRetrieveAETs);
-            }
-            File f = new File(dir, uid);
-            if (f.isFile()) {
-                resultsq.addDicomObject(resultItem);
-            } else {
-                resultItem.putInt(Tag.FailureReason, VR.US,
-                        NO_SUCH_OBJECT_INSTANCE);
-                if (failedsq == null) {
-                    failedsq = result.putSequence(Tag.FailedSOPSequence);
-                }
-                failedsq.addDicomObject(resultItem);
-            }
-        }
-        return result;
-    }
-
-    private synchronized Timer stgcmtTimer() {
-        if (stgcmtTimer == null) {
-            stgcmtTimer = new Timer("SendStgCmtResult", true);
-        }
-        return stgcmtTimer;
-    }
-
-    void sendStgCmtResult(NetworkApplicationEntity stgcmtAE,
-            DicomObject result) throws Exception {
-        synchronized (ae) {
-            ae.setReuseAssocationFromAETitle(stgcmtReuseFrom
-                    ? new String[]{stgcmtAE.getAETitle()}
-                    : new String[]{});
-            ae.setReuseAssocationToAETitle(stgcmtReuseTo
-                    ? new String[]{stgcmtAE.getAETitle()}
-                    : new String[]{});
-            Association as = ae.connect(stgcmtAE, executor);
-            as.nevent(UID.StorageCommitmentPushModelSOPClass,
-                    UID.StorageCommitmentPushModelSOPInstance,
-                    eventTypeIdOf(result), result, UID.ImplicitVRLittleEndian,
-                    nEventReportRspHandler);
-            if (!stgcmtReuseFrom && !stgcmtReuseTo) {
-                as.release(true);
-            }
-        }
-    }
-
-    private static int eventTypeIdOf(DicomObject result) {
-        return result.contains(Tag.FailedSOPInstanceUIDList) ? 2 : 1;
-    }
 }

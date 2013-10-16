@@ -263,9 +263,7 @@ function insertSeries(patId, studyUID) {
                 var sql = "insert into series values('" + series['seriesUID'] + "','" + series['seriesNumber'] + "','" + series['modality'] + "','" + series['seriesDesc'] + "','" + series['bodyPart'] + "'," + series['totalInstances'] + ",'" + series['patientId'] + "','" + series['studyUID'] + "','','');";
                 database.transaction(function(tx) {
                     tx.executeSql(sql, [], function(trans, results) {
-                        if(pat.serverURL != 'C-MOVE' && pat.serverURL != 'C-GET') {
-                            insertInstances(patId, studyUID, series['seriesUID']);
-                        }
+                           insertInstances(patId, studyUID, series['seriesUID']);
                     }, errorHandler);
                 });
             }

@@ -264,23 +264,9 @@
                     </c:when>
 
                     <c:otherwise>
-                        <c:choose>
-                            <c:when test="${param.wadoUrl == 'C-GET'}">
-                                <c:if test="${(instanceNumber == middle) || (instanceNumber==1) || (instanceNumber==numberOfImages)}">
-                                    <img name="${instanceNumber}" id="${fn:replace(seriesId, '.','_')}_${instanceNumber}" src="Wado.do?dicomURL=${param.dcmURL}&study=${param.study}&series=${seriesId}&object=${imageId}&retrieveType=${param.wadoUrl}&sopClassUID=${sopClassUID}" height="48px" ondblclick="openSeriesInViewer(this)" />
-                                </c:if>
-                            </c:when>
-                            <c:when test="${param.wadoUrl == 'C-MOVE'}">
-                                <c:if test="${(instanceNumber == middle) || (instanceNumber==1) || (instanceNumber==numberOfImages)}">
-                                    <img name="${instanceNumber}" id="${fn:replace(seriesId, '.','_')}_${instanceNumber}" src="Wado.do?dicomURL=${param.dcmURL}&study=${param.study}&series=${seriesId}&object=${imageId}&retrieveType=${param.wadoUrl}" height="48px" ondblclick="openSeriesInViewer(this)" />
-                                </c:if>
-                            </c:when>
-                            <c:otherwise>
-                                <c:if test="${(instanceNumber == middle) || (instanceNumber==1) || (instanceNumber==numberOfImages)}">
-                                    <img name="${instanceNumber}" id="${fn:replace(seriesId, '.','_')}_${instanceNumber}" src="Image.do?serverURL=${param.wadoUrl}&study=${param.study}&series=${seriesId}&object=${imageId}&rows=512" height="48px" ondblclick="openSeriesInViewer(this)" />
-                                </c:if>
-                            </c:otherwise>
-                        </c:choose>
+                          <c:if test="${(instanceNumber == middle) || (instanceNumber==1) || (instanceNumber==numberOfImages)}">
+                              <img name="${instanceNumber}" id="${fn:replace(seriesId, '.','_')}_${instanceNumber}" src="Image.do?serverURL=${param.wadoUrl}&study=${param.study}&series=${seriesId}&object=${imageId}&rows=512" height="48px" ondblclick="openSeriesInViewer(this)" />
+                          </c:if>
                     </c:otherwise>
                 </c:choose>
             </img:Image>

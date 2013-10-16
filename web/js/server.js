@@ -20,7 +20,7 @@ $(document).ready(function() {
             var str = '<tr style="width:100%"><td><input type="checkbox" disabled="true" /></td><td><input type="text" id="desc" style="width:100%"></td>' +
             '<td><input type="text" id="aet" style="width:100%"></td>' +
             '<td><input type="text" id="host" style="width:100%"></td><td><input type="text" id="port" style="width:100%"></td>' +
-            '<td><select id="retrieve" style="width:100%" onchange="hideWadoFields()"><option value="WADO">WADO</option><option value="C-MOVE">C-MOVE</option><option value="C-GET">C-GET</option></select></td>' +
+            '<td><select id="retrieve" style="width:100%" onchange="hideWadoFields()"><option value="WADO">WADO</option></select></td>' +
             '<td><input type="text" id="wadoCxt" value="wado" style="width:100%" title="WADO Context"></td><td><input type="text" id="wadoPort" value="8080" style="width:87%" title="WADO Port">' +
             '<a href="#" onClick="insertTable();"><img src="images/save.png"></a></td></tr>';
             //var wid = $("#serverTable").css('width');
@@ -332,13 +332,7 @@ function editSelectedRow() {
         '<td><input type="text" id="aet" value="' + currAET + '"></td>' +
         '<td><input type="text" id="host" value="' + currHost +'"></td><td><input type="text" id="port" value="' + currPort +'"></td>';
 
-        if(currRet == 'C-MOVE') {
-            str += '<td><select id="retrieve" value="' + currRet + '" style="width:100%" onchange="hideWadoFields()"><option value="WADO" selected>WADO</option><option value="C-MOVE" selected>C-MOVE</option><option value="C-GET">C-GET</option></select></td>';
-        } else if(currRet == 'C-GET') {
-            str += '<td><select id="retrieve" value="' + currRet + '" style="width:100%" onchange="hideWadoFields()"><option value="WADO">WADO</option><option value="C-MOVE">C-MOVE</option><option value="C-GET" selected>C-GET</option></select></td>';
-        } else {
-            str += '<td><select id="retrieve" value="' + currRet + '" style="width:100%" onchange="hideWadoFields()"><option value="WADO" selected>WADO</option><option value="C-MOVE">C-MOVE</option><option value="C-GET">C-GET</option></select></td>';
-        }
+        str += '<td><select id="retrieve" value="' + currRet + '" style="width:100%" onchange="hideWadoFields()"><option value="WADO" selected>WADO</option></select></td>';
         str += '<td><input type="text" id="wadoCxt" value="' + currWadoCxt + '" style="width:100%" title="WADO Context"></td><td><input type="text" id="wadoPort" value="' + currWadoPort + '" style="width:87%" title="WADO Port">';
         str += '<a href="#" onClick="editTable(); $(this).parent().parent().remove();"><img src="images/save.png"></a></td>';
 

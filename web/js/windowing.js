@@ -278,15 +278,8 @@ function parseAndLoadDicom()
 {
     //alert(wadoURL);
     var reader=new DicomInputStreamReader();
-
-    if( !(!(wadoURL.indexOf('C-GET') >= 0) && !(wadoURL.indexOf('C-MOVE') >= 0))) {
-        //var urlTmp = "DcmFile.do?study=" + getParameter(wadoURL, "studyUID") + "&object=" + getParameter(wadoURL, "objectUID");
-        var urlTmp = "Wado.do?study=" + getParameter(wadoURL, "studyUID") + "&object=" + getParameter(wadoURL, "objectUID") + "&contentType=application/dicom";
-    	reader.readDicom(urlTmp);
-    } else {
-       // reader.readDicom("http://"+top.location.host+"/"+getContextPath()+"/DcmStream.do?wadourl="+wadoURL.replaceAll("&","_"));
-    	 reader.readDicom("DcmStream.do?wadourl="+wadoURL.replaceAll("&","_"));
-    }
+   // reader.readDicom("http://"+top.location.host+"/"+getContextPath()+"/DcmStream.do?wadourl="+wadoURL.replaceAll("&","_"));
+	 reader.readDicom("DcmStream.do?wadourl="+wadoURL.replaceAll("&","_"));
 
     /*var urlTmp = "Wado.do?dicomURL=DICOM://ASGARDCM:OVIYAM2@localhost:11112&study=" + getParameter(wadoURL, "studyUID") + "&series=" + getParameter(wadoURL, "seriesUID");
     urlTmp += "&object=" + getParameter(wadoURL, "objectUID");

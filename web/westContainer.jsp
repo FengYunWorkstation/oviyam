@@ -79,12 +79,6 @@
             
                 $('.seriesTable').find('img:last').load(function() { 
                 	//console.log("Series Loaded!!!!!!.....");
-                	if(pat.serverURL == 'C-GET' || pat.serverURL == 'C-MOVE') {
-	                	var tmpImgSrc = $(this).attr('src');
-    	           		$(this).parent().waitForImages(function() {
-							insertInstances('${param.patient}', getParameter(tmpImgSrc, 'study'), getParameter(tmpImgSrc, 'series'));  
-               			});
-               		}
                 	saveJpgImages();
                 });   
 
@@ -220,15 +214,6 @@
     <ser:Series patientId="${param.patient}" study="${param.study}" dcmURL="${param.dcmURL}">
         <c:set var="middle" value="${(numberOfImages+0.5)/2}" />
         <fmt:formatNumber var="middle" maxFractionDigits="0" value="${middle}" />
-        <c:if test="${not (param.wadoUrl != 'C-MOVE' && param.wadoUrl != 'C-GET')}">
-            <script type="text/javascript">
-                series.push({
-                    "seriesUID" : '${seriesId}',
-                    "totalImages" : 1
-                });
-            </script>
-        </c:if>
-
         <table class="seriesTable" style="table-layout:fixed; width: 100%; font-family: Arial,Helvitica,Serif; font-size:11px; background:#808080; border-radius:3px;">
             <tbody>
                 <tr onclick="jQuery(this).next().toggle()" style="cursor: pointer; background: #BBB; font-weight:bold;">
@@ -277,35 +262,11 @@
 
                     <c:otherwise>
                         <c:choose>
-                            <c:when test="${param.wadoUrl == 'C-GET'}">
-                                <c:choose>
-                                    <c:when test="${(instanceNumber == middle) || (instanceNumber==1) || (instanceNumber==numberOfImages)}">
-                                        <img name="${instanceNumber}" id="${fn:replace(seriesId, '.','_')}_${instanceNumber}" src="Wado.do?dicomURL=${param.dcmURL}&study=${param.study}&series=${seriesId}&object=${imageId}&retrieveType=${param.wadoUrl}&sopClassUID=${sopClassUID}" onclick="changeSeries(this)" height="48px" />
-                                    </c:when>
-                                    <c:otherwise>
-                                        <img name="${instanceNumber}" id="${fn:replace(seriesId, '.','_')}_${instanceNumber}" src="Wado.do?dicomURL=${param.dcmURL}&study=${param.study}&series=${seriesId}&object=${imageId}&retrieveType=${param.wadoUrl}&sopClassUID=${sopClassUID}" onclick="changeSeries(this)" height="48px" style="display:none" />
-                                    </c:otherwise>
-                                </c:choose>
-                            </c:when>
-                            <c:when test="${param.wadoUrl == 'C-MOVE'}">
-                                <c:choose>
-                                    <c:when test="${(instanceNumber == middle) || (instanceNumber==1) || (instanceNumber==numberOfImages)}">
-                                        <img name="${instanceNumber}" id="${fn:replace(seriesId, '.','_')}_${instanceNumber}" src="Wado.do?dicomURL=${param.dcmURL}&study=${param.study}&series=${seriesId}&object=${imageId}&retrieveType=${param.wadoUrl}" onclick="changeSeries(this)" height="48px" />
-                                    </c:when>
-                                    <c:otherwise>
-                                        <img name="${instanceNumber}" id="${fn:replace(seriesId, '.','_')}_${instanceNumber}" src="Wado.do?dicomURL=${param.dcmURL}&study=${param.study}&series=${seriesId}&object=${imageId}&retrieveType=${param.wadoUrl}" onclick="changeSeries(this)" height="48px" style="display:none" />
-                                    </c:otherwise>
-                                </c:choose>
+                            <c:when test="${(instanceNumber == middle) || (instanceNumber==1) || (instanceNumber==numberOfImages)}">
+                                <img name="${instanceNumber}" id="${fn:replace(seriesId, '.','_')}_${instanceNumber}" src="Image.do?serverURL=${param.wadoUrl}&study=${param.study}&series=${seriesId}&object=${imageId}&rows=512" onclick="changeSeries(this)" height="48px" />
                             </c:when>
                             <c:otherwise>
-                                <c:choose>
-                                    <c:when test="${(instanceNumber == middle) || (instanceNumber==1) || (instanceNumber==numberOfImages)}">
-                                        <img name="${instanceNumber}" id="${fn:replace(seriesId, '.','_')}_${instanceNumber}" src="Image.do?serverURL=${param.wadoUrl}&study=${param.study}&series=${seriesId}&object=${imageId}&rows=512" onclick="changeSeries(this)" height="48px" />
-                                    </c:when>
-                                    <c:otherwise>
-                                        <img name="${instanceNumber}" id="${fn:replace(seriesId, '.','_')}_${instanceNumber}" src="Image.do?serverURL=${param.wadoUrl}&study=${param.study}&series=${seriesId}&object=${imageId}&rows=512" onclick="changeSeries(this)" height="48px" style="display:none"/>
-                                    </c:otherwise>
-                                </c:choose>
+                                <img name="${instanceNumber}" id="${fn:replace(seriesId, '.','_')}_${instanceNumber}" src="Image.do?serverURL=${param.wadoUrl}&study=${param.study}&series=${seriesId}&object=${imageId}&rows=512" onclick="changeSeries(this)" height="48px" style="display:none"/>
                             </c:otherwise>
                         </c:choose>
                     </c:otherwise>

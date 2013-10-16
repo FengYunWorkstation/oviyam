@@ -45,10 +45,6 @@
     <servlet-class>in.raster.oviyam.servlet.AutoRefreshStudies</servlet-class>
   </servlet>
   <servlet>
-    <servlet-name>WadoServlet</servlet-name>
-    <servlet-class>in.raster.oviyam.servlet.WadoServlet</servlet-class>
-  </servlet>
-  <servlet>
     <servlet-name>Listener</servlet-name>
     <servlet-class>in.raster.oviyam.servlet.ListenerServlet</servlet-class>
   </servlet>
@@ -111,10 +107,6 @@
   <servlet-mapping>
     <servlet-name>AutoRefreshStudies</servlet-name>
     <url-pattern>/RefreshStudies.do</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>WadoServlet</servlet-name>
-    <url-pattern>/Wado.do</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Listener</servlet-name>
