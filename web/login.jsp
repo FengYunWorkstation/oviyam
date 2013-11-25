@@ -26,7 +26,7 @@
   
         	var lang = $.cookies.get( 'language' );
         	var bundleName = '';
-			if (lang == null || lang.trim() == 'en_GB') {
+			if (lang == null || lang.trim() == '' || lang.trim() == 'en_GB') {
     			bundleName = 'js/i18n/Bundle.js'; 
 			} else {
     			bundleName = 'js/i18n/' + "Bundle_" + lang + ".js";
