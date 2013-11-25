@@ -17,7 +17,7 @@
 			height: 200,
 			width: 175,
 			rounded: true,
-			imgpath: "",
+			imgpath: "images/",
 			themepath: "https://ajax.googleapis.com/ajax/libs/jqueryui/",
 			jqueryuiversion: "1.8.10",
 			initialtext: "Switch Theme",

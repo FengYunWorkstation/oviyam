@@ -57,34 +57,24 @@ public class XMLFileHandler {
     private static Logger log = Logger.getLogger(XMLFileHandler.class);
     
     public String getXMLFilePath(String tmpDir) {
-        //String xmlFilePath = this.getClass().getResource("/conf/oviyam2-config.xml").getPath();
         String fname = "oviyam2-config.xml";
         String retValue = null;
         
-       // if(xmlFilePath.indexOf("default") > 0) {
-           // try {
-            	File srcFile = new File(this.getClass().getResource("/conf/oviyam2-config.xml").getPath());
-                //retValue = xmlFilePath.substring(0, xmlFilePath.indexOf("default")) + "default" + File.separator + fname;
-                retValue = tmpDir + File.separator + fname;
-                File destFile = new File(retValue);
-                //check the exists of XML file. If not exists, copy the file to default folder.
-                if (!destFile.exists()) {
-                    copyFile(srcFile, destFile);
-                }
-            //} //catch (URISyntaxException ex) {
-              //  log.error("Error while getting XML file path",ex);
-              //  return "";
-            //}
-        //}
-                
+	retValue = tmpDir + File.separator + fname;
+	File destFile = new File(retValue);
+
+	//check the exists of XML file. If not exists, copy the file to default folder.
+	if (!destFile.exists()) {
+	    FileInputStream in = (FileInputStream) this.getClass().getClassLoader().getResourceAsStream("/conf/oviyam2-config.xml");
+	    copyFile(in, destFile);
+	}
+
         return retValue;
     }
     
-    private void copyFile(File src, File dest) {
-        FileInputStream in = null;
+    private void copyFile(FileInputStream in, File dest) {
         FileOutputStream out = null;
         try {
-            in = new FileInputStream(src);
             out = new FileOutputStream(dest);
             byte[] buffer = new byte[1024];
             int len;

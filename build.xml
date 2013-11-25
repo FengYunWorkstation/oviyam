@@ -79,13 +79,11 @@
 	     	</manifest>
 			<fileset dir="${web.dir}">
 				<exclude name="**/web.xml" />
-				<exclude name="WEB-INF/lib/dcm4che.jar" />
 				<exclude name="WEB-INF/lib/log4j-1.2.13.jar"/>
 				<exclude name="WEB-INF/lib/slf4j-api-1.4.3.jar" />
 				<exclude name="WEB-INF/lib/slf4j-log4j12-1.4.3.jar" />
 				<exclude name="WEB-INF/lib/jsp-api.jar"/>
 				<exclude name="WEB-INF/lib/servlet-api.jar"/>
-				<exclude name="WEB-INF/lib/vtk.jar" />
 			</fileset>
 		</war>
 	</target>
